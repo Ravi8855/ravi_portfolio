@@ -7,52 +7,63 @@
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <style>
-    :root{
-      --bg:#071018; --card:#0e1720; --muted:#8aa0ac; --accent:#00eaff; --glass: rgba(255,255,255,0.06);
+    :root {
+      --bg:#071018; --card:#0e1720; --muted:#9fb2bd; --accent:#00eaff; --glass:rgba(255,255,255,0.07);
       --radius:14px; --maxw:1200px;
     }
-    body{font-family:Inter,system-ui,Segoe UI; margin:0; color:#e6f0f2; background:#061018;}
 
+    body{font-family:Inter,system-ui; margin:0; background:#061018; color:white;}
     .container{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
 
-    header{padding:100px 0 40px; position:relative; overflow:hidden;}
-    .hero{display:grid; grid-template-columns:1fr 420px; gap:50px; align-items:center;}
-    .hero-left h1{font-size:3rem; font-weight:800; margin:0 0 12px;}
+    /* HERO */
+    header{padding:100px 0 60px;}
+    .hero{display:grid; grid-template-columns:1fr 380px; gap:40px; align-items:center;}
+    h1{font-size:2.7rem; margin:0 0 10px; font-weight:800;}
     .lead{font-size:1.1rem; color:var(--muted); max-width:60ch;}
 
-    .cta{margin-top:20px; display:flex; gap:14px;}
-    .btn-primary{background:linear-gradient(90deg,#00eaff,#4be3ff); color:#001; padding:12px 20px; border-radius:12px; font-weight:700; text-decoration:none;}
-    .btn-ghost{border:1px solid rgba(255,255,255,0.1); color:var(--muted); padding:10px 16px; border-radius:12px; text-decoration:none;}
+    .cta{margin-top:18px; display:flex; gap:12px;}
+    .btn-primary{background:linear-gradient(90deg,#00eaff,#4be3ff); padding:12px 20px; border-radius:12px; color:#001; font-weight:700; text-decoration:none;}
+    .btn-ghost{border:1px solid rgba(255,255,255,0.15); padding:10px 18px; border-radius:12px; color:var(--muted); text-decoration:none;}
 
-    .hero-card{background:var(--glass); padding:22px; border-radius:16px; border:1px solid rgba(255,255,255,0.1);} 
+    .hero-card{background:var(--glass); padding:22px; border-radius:16px; border:1px solid rgba(255,255,255,0.15);} 
 
+    /* SECTIONS */
     section{padding:80px 0;}
-    h2{text-align:center; margin-bottom:32px; font-size:2.2rem;}
+    h2{text-align:center; font-size:2.1rem; margin-bottom:30px;}
 
-    .card{background:var(--glass); padding:20px; border-radius:14px; border:1px solid rgba(255,255,255,0.08);} 
+    .card{background:var(--glass); padding:20px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);} 
 
+    /* PROJECTS */
     .projects{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px;}
     .proj-title{margin:0 0 6px; font-weight:700;}
-    .proj-desc{color:var(--muted); margin-bottom:14px;}
+    .proj-desc{color:var(--muted); margin-bottom:16px;}
+    .project-links{display:flex; gap:10px; margin-top:12px;}
 
+    /* CONTACT */
     form{display:grid; gap:12px;}
-    input, textarea{background:#0b1a25; border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:8px; color:#fff;}
-    .submit{background:linear-gradient(90deg,#00eaff,#4be3ff); border:none; padding:12px; border-radius:10px; font-weight:700; cursor:pointer;}
+    input, textarea{background:#0b1a25; border:1px solid rgba(255,255,255,0.15); padding:12px; border-radius:8px; color:white;}
+    .submit{background:linear-gradient(90deg,#00eaff,#4be3ff); padding:12px; border:none; border-radius:10px; font-weight:700; cursor:pointer;}
 
+    /* FOOTER */
     footer{text-align:center; padding:25px; color:var(--muted);}
 
+    /* RESPONSIVE */
     @media(max-width:780px){ .hero{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <header data-aos="fade-down">
+
+    <!-- HERO SECTION -->
+    <header data-aos="fade-up">
       <div class="hero">
-        <div class="hero-left">
+        <div>
           <h1>Hi, I'm Ravi — Full Stack Developer</h1>
-          <p class="lead">I build clean, scalable and accessible web apps using React, Node.js, AWS and 3D Web technologies.</p>
+          <p class="lead">I build scalable, accessible & modern web applications using React, Node.js, AWS and 3D Web technologies.</p>
+
           <div class="cta">
             <a class="btn-primary" href="./resume.pdf">Download Resume</a>
             <a class="btn-ghost" href="#projects">View Projects</a>
@@ -60,82 +71,98 @@
         </div>
 
         <div class="hero-card" data-aos="fade-left">
-          <h3>Quick Snapshot</h3>
-          <p class="small muted">React • Node.js • Three.js • AWS • MySQL</p>
-          <a class="btn-ghost" href="https://github.com/Ravi8855">GitHub</a>
+          <h3>Snapshot</h3>
+          <p class="muted small">React • Node.js • Three.js • AWS • MySQL</p>
+          <a class="btn-ghost" href="https://github.com/Ravi8855" target="_blank">GitHub Profile</a>
         </div>
       </div>
     </header>
 
+    <!-- ABOUT -->
     <section id="about" data-aos="fade-up">
       <h2>About Me</h2>
       <div class="card">
-        <p>I am Ravi, a passionate Full Stack Developer focused on building 3D, accessible and user-centered applications. I enjoy creating meaningful applications like Sign Language tools that help people learn and communicate better.</p>
+        <p>I create user-focused, performance-optimized applications with clean UI and meaningful functionality. My work in Sign Language and 3D learning tools aims to improve accessibility and communication.</p>
       </div>
     </section>
 
+    <!-- SKILLS -->
     <section id="skills" data-aos="fade-up">
       <h2>Skills</h2>
       <div class="projects">
-        <div class="card">React, Next.js, Tailwind, JavaScript, HTML, CSS</div>
+        <div class="card">React, Next.js, Tailwind, JavaScript</div>
         <div class="card">Node.js, Express, MySQL, SQLite</div>
-        <div class="card">AWS EC2, S3, Docker Basics</div>
-        <div class="card">Three.js, 3D Interfaces</div>
+        <div class="card">AWS EC2, S3, Linux, Git</div>
+        <div class="card">Three.js, WebGL, 3D Interfaces</div>
       </div>
     </section>
 
+    <!-- PROJECTS -->
     <section id="projects" data-aos="fade-up">
       <h2>Projects</h2>
       <div class="projects">
 
+        <!-- SIGN FUSION -->
         <div class="card" data-aos="zoom-in">
           <h3 class="proj-title">ISL Translator – Sign Fusion</h3>
-          <p class="proj-desc">Real-time ISL Translator using ML + 3D Avatars.</p>
-          <a class="btn-primary" href="https://sign-fusion.vercel.app">Live Demo</a>
-          <a class="btn-ghost" href="https://github.com/mdismail25/Sign-Fusion">GitHub</a>
+          <p class="proj-desc">Real-time Indian Sign Language translator using ML + 3D avatars.</p>
+          <div class="project-links">
+            <a class="btn-primary" href="https://sign-fusion.vercel.app" target="_blank">Live Demo</a>
+            <a class="btn-ghost" href="https://github.com/mdismail25/Sign-Fusion" target="_blank">GitHub</a>
+          </div>
         </div>
 
+        <!-- LEARNSIGN -->
         <div class="card" data-aos="zoom-in" data-aos-delay="100">
           <h3 class="proj-title">LearnSign – 3D Avatar Learning</h3>
-          <p class="proj-desc">3D animated avatar for learning sign language.</p>
-          <a class="btn-primary" href="https://learnsign-demo.vercel.app">Live Demo</a>
-          <a class="btn-ghost" href="https://github.com/Ravi8855">GitHub</a>
+          <p class="proj-desc">Interactive 3D avatar for learning sign language.</p>
+          <div class="project-links">
+            <a class="btn-primary" href="https://learnsign-demo.vercel.app" target="_blank">Live Demo</a>
+            <a class="btn-ghost" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
+          </div>
         </div>
 
+        <!-- FEEDBACK SYSTEM -->
         <div class="card" data-aos="zoom-in" data-aos-delay="200">
           <h3 class="proj-title">Feedback System</h3>
-          <p class="proj-desc">Full stack feedback app built using React + Node + SQLite.</p>
-          <a class="btn-ghost" href="https://github.com/Ravi8855/Feedback-App">GitHub</a>
+          <p class="proj-desc">Full-stack feedback application using React + Node + SQLite.</p>
+          <div class="project-links">
+            <a class="btn-ghost" href="https://github.com/Ravi8855/Feedback-App" target="_blank">GitHub</a>
+          </div>
         </div>
 
+        <!-- UNIT CONVERTER -->
         <div class="card" data-aos="zoom-in" data-aos-delay="300">
           <h3 class="proj-title">Unit Converter – Android App</h3>
-          <p class="proj-desc">Android application for fast unit conversions.</p>
-          <a class="btn-ghost" href="https://github.com/Ravi8855">GitHub</a>
+          <p class="proj-desc">Lightweight Android app for fast conversions.</p>
+          <div class="project-links">
+            <a class="btn-ghost" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
+          </div>
         </div>
 
       </div>
     </section>
 
+    <!-- CONTACT -->
     <section id="contact" data-aos="fade-up">
       <h2>Contact Me</h2>
       <div class="card">
         <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST">
           <input type="hidden" name="_captcha" value="false">
-          <input type="text" name="name" placeholder="Name" required>
-          <input type="email" name="email" placeholder="Email" required>
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" required>
           <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
           <button class="submit">Send Message</button>
         </form>
       </div>
     </section>
 
-    <footer>
-      © 2025 Ravi | Portfolio
-    </footer>
+    <footer>© 2025 Ravi • Portfolio</footer>
+
   </div>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init();</script>
+
 </body>
 </html>
