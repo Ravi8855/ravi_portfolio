@@ -5,24 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ravi - Portfolio</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #0f0f0f; color: #fff; }
-    header { padding: 40px; text-align: center; background: #1a1a1a; }
-    h1 { font-size: 2.5rem; }
-    nav { text-align: center; margin-top: 20px; }
-    nav a { margin: 0 15px; color: #00eaff; text-decoration: none; font-size: 1.1rem; }
-    section { padding: 60px 10%; }
-    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .card { background: #1f1f1f; padding: 20px; border-radius: 10px; }
-    .btn { display: inline-block; padding: 10px 20px; background: #00eaff; color: #000; border-radius: 5px; text-decoration: none; margin-top: 15px; }
-    footer { background: #1a1a1a; padding: 20px; text-align: center; margin-top: 40px; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #0d0d0d; color: #fff; scroll-behavior: smooth; }
+    header { padding: 60px 20px; text-align: center; background: linear-gradient(135deg,#1a1a1a,#111); }
+    h1 { font-size: 3rem; animation: fadeIn 1.5s; }
+    .subtitle { font-size: 1.2rem; opacity: 0.8; animation: fadeIn 2s; }
+    nav { margin-top: 25px; animation: fadeIn 2.5s; }
+    nav a { margin: 0 15px; color: #00eaff; text-decoration: none; font-size: 1.1rem; transition: 0.3s; }
+    nav a:hover { color: #fff; }
+    .btn { display: inline-block; padding: 12px 25px; background: #00eaff; color: #000; border-radius: 8px; text-decoration: none; margin: 20px 10px; transition: 0.3s; }
+    .btn:hover { transform: scale(1.05); background: #00aacc; }
+    section { padding: 70px 10%; animation: fadeUp 1.5s; }
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+    .card { background: #1a1a1a; padding: 25px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: 0.3s; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 0 15px rgba(0,255,255,0.3); }
+    footer { background: #111; padding: 25px; text-align: center; margin-top: 40px; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeUp { from {opacity:0; transform: translateY(25px);} to {opacity:1; transform: translateY(0);} }
   </style>
 </head>
 <body>
   <header>
     <h1>Ravi - Full Stack Developer</h1>
-    <p>React | Node.js | AWS | Sign Language Tech | AI Integration</p>
-        <a class="btn" href="./resume.pdf" download>Download Resume</a>
-
+    <p class="subtitle">React | Node.js | AWS | Sign Language Tech | AI Integration</p>
+    <a class="btn" href="./resume.pdf" download>Download Resume</a>
+    <a class="btn" href="#projects">View Projects</a>
     <nav>
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
@@ -34,9 +41,9 @@
   <section id="about">
     <h2>About Me</h2>
     <p>
-      I'm Ravi, a passionate Full Stack Developer and final-year Computer Science student. I specialize in creating
-      impactful, user-focused applications, especially in accessibility and real-time systems. I have hands-on
-      experience in React, Node.js, AWS, Java, Python, MySQL, Tailwind CSS, Android, and 3D technologies like Three.js.
+      I'm Ravi, a passionate Full Stack Developer and final-year CSE student. I build impactful, accessible and scalable
+      applications with modern technologies. I focus on React, Node.js, AWS, Tailwind, Python, MySQL and 3D UI with Three.js.
+      I love solving problems and creating tools that make life easier.
     </p>
   </section>
 
@@ -50,33 +57,40 @@
     <div class="projects">
       <div class="card">
         <h3>ISL Translator – Sign Fusion</h3>
-        <p>A real-time Indian Sign Language translator using 3D models and ML integration.</p>
-        <a class="btn" href="https://sign-fusion.vercel.app" target="_blank">View Project</a>
+        <p>Real-time ISL translator using ML + 3D avatars.</p>
+        <a class="btn" href="https://sign-fusion.vercel.app" target="_blank">View</a>
       </div>
 
       <div class="card">
         <h3>LearnSign 3D Avatar</h3>
-        <p>Interactive sign language learning tool with THREE.js and GLTF animated avatar.</p>
-        <a class="btn" href="https://learnsign-demo.vercel.app" target="_blank">View Project</a>
+        <p>3D animated avatar built with THREE.js to teach sign language.</p>
+        <a class="btn" href="https://learnsign-demo.vercel.app" target="_blank">View</a>
       </div>
 
       <div class="card">
         <h3>Full Stack Feedback System</h3>
-        <p>Feedback app built using React, Node.js, SQLite, deployed on Vercel & Render.</p>
+        <p>Feedback app built with React, Node.js & SQLite.</p>
         <a class="btn" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
       </div>
 
       <div class="card">
         <h3>Unit Converter Android App</h3>
-        <p>Android app for unit conversion created during internship.</p>
+        <p>Android application to convert units efficiently.</p>
         <a class="btn" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
       </div>
     </div>
   </section>
 
   <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: ravichalmar@gmail.com</p>
+    <h2>Contact Me</h2>
+    <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST" style="max-width:500px; margin:auto;">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="name" placeholder="Your Name" required style="width:100%; padding:12px; margin:10px 0;">
+      <input type="email" name="email" placeholder="Your Email" required style="width:100%; padding:12px; margin:10px 0;">
+      <textarea name="message" placeholder="Your Message" required style="width:100%; padding:12px; margin:10px 0; height:130px;"></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+    <p style="margin-top:20px;">Email: ravichalmar@gmail.com</p>
     <p>LinkedIn: <a href="https://www.linkedin.com/in/ravi-s-b7b86135a/" target="_blank">linkedin.com/in/ravi-s-b7b86135a/</a></p>
     <p>GitHub: <a href="https://github.com/Ravi8855" target="_blank">github.com/Ravi8855</a></p>
   </section>
@@ -86,3 +100,106 @@
   </footer>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ravi - Portfolio</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #0d0d0d; color: #fff; scroll-behavior: smooth; }
+    header { padding: 60px 20px; text-align: center; background: linear-gradient(135deg,#1a1a1a,#111); }
+    h1 { font-size: 3rem; animation: fadeIn 1.5s; }
+    .subtitle { font-size: 1.2rem; opacity: 0.8; animation: fadeIn 2s; }
+    nav { margin-top: 25px; animation: fadeIn 2.5s; }
+    nav a { margin: 0 15px; color: #00eaff; text-decoration: none; font-size: 1.1rem; transition: 0.3s; }
+    nav a:hover { color: #fff; }
+    .btn { display: inline-block; padding: 12px 25px; background: #00eaff; color: #000; border-radius: 8px; text-decoration: none; margin: 20px 10px; transition: 0.3s; }
+    .btn:hover { transform: scale(1.05); background: #00aacc; }
+    section { padding: 70px 10%; animation: fadeUp 1.5s; }
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+    .card { background: #1a1a1a; padding: 25px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: 0.3s; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 0 15px rgba(0,255,255,0.3); }
+    footer { background: #111; padding: 25px; text-align: center; margin-top: 40px; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeUp { from {opacity:0; transform: translateY(25px);} to {opacity:1; transform: translateY(0);} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ravi - Full Stack Developer</h1>
+    <p class="subtitle">React | Node.js | AWS | Sign Language Tech | AI Integration</p>
+    <a class="btn" href="./resume.pdf" download>Download Resume</a>
+    <a class="btn" href="#projects">View Projects</a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      I'm Ravi, a passionate Full Stack Developer and final-year CSE student. I build impactful, accessible and scalable
+      applications with modern technologies. I focus on React, Node.js, AWS, Tailwind, Python, MySQL and 3D UI with Three.js.
+      I love solving problems and creating tools that make life easier.
+    </p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <p>React, Node.js, AWS, Java, MySQL, Tailwind, Three.js, HTML, CSS, JavaScript, Python, Android, Git</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <h3>ISL Translator – Sign Fusion</h3>
+        <p>Real-time ISL translator using ML + 3D avatars.</p>
+        <a class="btn" href="https://sign-fusion.vercel.app" target="_blank">View</a>
+      </div>
+
+      <div class="card">
+        <h3>LearnSign 3D Avatar</h3>
+        <p>3D animated avatar built with THREE.js to teach sign language.</p>
+        <a class="btn" href="https://learnsign-demo.vercel.app" target="_blank">View</a>
+      </div>
+
+      <div class="card">
+        <h3>Full Stack Feedback System</h3>
+        <p>Feedback app built with React, Node.js & SQLite.</p>
+        <a class="btn" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
+      </div>
+
+      <div class="card">
+        <h3>Unit Converter Android App</h3>
+        <p>Android application to convert units efficiently.</p>
+        <a class="btn" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST" style="max-width:500px; margin:auto;">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="name" placeholder="Your Name" required style="width:100%; padding:12px; margin:10px 0;">
+      <input type="email" name="email" placeholder="Your Email" required style="width:100%; padding:12px; margin:10px 0;">
+      <textarea name="message" placeholder="Your Message" required style="width:100%; padding:12px; margin:10px 0; height:130px;"></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+    <p style="margin-top:20px;">Email: ravichalmar@gmail.com</p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/ravi-s-b7b86135a/" target="_blank">linkedin.com/in/ravi-s-b7b86135a/</a></p>
+    <p>GitHub: <a href="https://github.com/Ravi8855" target="_blank">github.com/Ravi8855</a></p>
+  </section>
+
+  <footer>
+    <p>© 2025 Ravi. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
+
