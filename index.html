@@ -261,6 +261,18 @@
       section{padding:60px 0}
       h2{margin-bottom:32px}
       .container{padding:0 20px}
+      /* Footer: allow social icons/labels to wrap and fit on small screens */
+      .footer-social{flex-wrap:wrap;gap:10px}
+      .social-link{min-width:0}
+      .social-link .social-icon{flex:0 0 20px}
+      .social-link span:last-child{white-space:normal;display:inline-block;font-size:0.9rem}
+    }
+
+    /* Extra small screens: tighten spacing and slightly reduce label size */
+    @media (max-width:420px){
+      .footer-social{gap:8px}
+      .social-link{padding:6px 8px}
+      .social-link span:last-child{font-size:0.85rem}
     }
 
     /* subtle focus style when keyboard used */
@@ -1622,6 +1634,5 @@
   </script>
 </body>
 </html>
-
 
 
