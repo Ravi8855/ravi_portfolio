@@ -11,162 +11,142 @@
 
   <style>
     :root{
-      --bg:#041018; --text:#eaf6fb; --muted:#9fb2bd;
-      --accent1:#00eaff; --accent2:#4be3ff;
-      --card:#0d1720; --glass:rgba(255,255,255,0.06);
+      --bg:#041018; --bg-soft:#071826; --text:#eaf6fb; --muted:#9fb2bd;
+      --accent1:#00eaff; --accent2:#4be3ff; --card:#0d1720; --glass:rgba(255,255,255,0.06);
       --radius:14px; --maxw:1200px;
     }
 
-    /* Reset & base */
+    /* Reset */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; line-height:1.6; scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased}
     a{color:inherit}
+
     .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 
-    /* Skip to content for accessibility */
-    .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip-link:focus{left:10px;top:10px;width:auto;height:auto;padding:8px 12px;background:#fff;color:#000;border-radius:6px;z-index:9999}
-
-    /* NAV */
+    /* NAVBAR */
     nav{position:fixed;left:0;right:0;top:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:10px 0;background:linear-gradient(180deg, rgba(4,8,12,0.6), rgba(4,8,12,0.35));backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.03)}
     .nav-inner{width:100%;max-width:var(--maxw);display:flex;align-items:center;justify-content:space-between;padding:6px 10px}
     .logo{font-weight:800;font-size:1.35rem;color:var(--accent1)}
-    .nav-links{display:flex;gap:18px;align-items:center}
-    .nav-links a{color:var(--muted);font-weight:600;padding:6px 8px;border-radius:8px;transition:0.18s}
-    .nav-links a:hover{color:var(--accent1);background:rgba(255,255,255,0.02)}
-    .nav-links a.active{color:var(--accent1);background:rgba(255,255,255,0.02)}
+    .nav-links{display:flex;gap:20px;align-items:center}
+    .nav-links a{color:var(--muted);font-weight:600;padding:6px 8px;border-radius:8px}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent1);background:rgba(255,255,255,0.02)}
 
-    /* Hamburger for mobile */
+    /* Hamburger */
     .hamburger{display:none;width:44px;height:40px;border-radius:8px;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.03);cursor:pointer;background:transparent}
     .hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;position:relative}
     .hamburger span:before,.hamburger span:after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--text);border-radius:2px}
     .hamburger span:before{top:-6px}
     .hamburger span:after{top:6px}
 
-    /* Mobile menu */
+    /* mobile menu */
     .mobile-menu{position:fixed;top:64px;right:18px;background:var(--card);border-radius:12px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;flex-direction:column;gap:8px}
     .mobile-menu a{padding:10px 12px;border-radius:8px;color:var(--muted)}
     .mobile-menu a:hover{color:var(--accent1);background:rgba(255,255,255,0.02)}
 
     /* HERO */
     header{padding:140px 0 80px;position:relative;overflow:visible}
-    .blob{position:absolute;right:-120px;top:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,234,255,0.08),transparent 65%);filter:blur(40px);pointer-events:none}
     .hero{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center}
-    h1{font-size:2.9rem;line-height:1.02;margin-bottom:12px}
-    .lead{color:var(--muted);font-size:1.05rem;max-width:60ch;margin-bottom:18px;opacity:0.98}
-    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    h1{font-size:3rem;line-height:1.02;margin-bottom:12px}
+    .lead{color:var(--muted);font-size:1.05rem;max-width:60ch;margin-bottom:18px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap}
     .btn{padding:12px 18px;border-radius:12px;font-weight:700}
     .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#001}
     .btn-ghost{border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
 
-    /* hero canvas */
-    .hero-canvas{width:100%;height:320px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,0.12),transparent)}
+    /* 3D canvas hero */
+    .hero-canvas{width:100%;height:320px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,0.15),transparent)}
 
     /* hero card */
-    .hero-card{background:var(--glass);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.08)}
+    .hero-card{background:var(--glass);padding:22px;border-radius:14px;border:1px solid rgba(255,255,255,0.08)}
 
     /* sections */
     section{padding:80px 0}
-    h2{text-align:center;margin-bottom:28px;font-size:2.05rem}
+    h2{text-align:center;margin-bottom:28px;font-size:2.1rem}
     .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
 
-    /* skills */
-    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    /* skills grid */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
     .skill-pill{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
-    .tag{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;font-size:0.85rem;color:var(--muted)}
 
     /* projects */
-    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-    .proj-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:10px}
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+    .proj-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:10px}
     .proj-thumb{width:100%;height:160px;border-radius:10px;object-fit:cover;background:#071b24;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600}
-    .proj-title{font-size:1.15rem;font-weight:700}
-    .proj-desc{color:var(--muted);font-size:0.98rem;margin-top:8px}
-
-    .proj-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:12px}
-    .project-links{display:flex;gap:8px;flex-wrap:wrap}
-    .btn-live{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#001;padding:8px 12px;border-radius:8px;font-weight:700}
-    .btn-code{padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);font-weight:600;color:var(--text)}
+    .proj-meta{display:flex;justify-content:space-between;align-items:center}
+    .tech-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;font-size:0.85rem;color:var(--muted)}
 
     /* footer */
-    footer{text-align:center;padding:30px 0;color:var(--muted)}
+    footer{text-align:center;padding:36px 0;color:var(--muted)}
 
-    /* light mode toggle (optional) */
-    body.light{--bg:#f7fbff;--text:#031021;--muted:#5b6b75;--card:#fff;--glass:rgba(2,6,10,0.03)}
+    /* light mode */
+    body.light{--bg:#f7fbff;--text:#031021;--muted:#5b6b75;--card:#ffffff;--glass:rgba(2,6,10,0.03)}
     body.light .btn-primary{color:#001}
 
     /* responsive */
-    @media (max-width:980px){ .hero{grid-template-columns:1fr 360px} }
-    @media (max-width:760px){
+    @media(max-width:980px){.hero{grid-template-columns:1fr 360px}}
+    @media(max-width:760px){
       .hero{grid-template-columns:1fr}
       .hamburger{display:flex}
       .nav-links{display:none}
-      .mobile-menu{display:none;flex-direction:column}
+      .mobile-menu{display:flex}
       .hero-canvas{height:220px}
     }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- NAV -->
-  <nav aria-label="Main navigation">
+  <nav>
     <div class="nav-inner container">
       <div class="logo">Ravi.</div>
-
-      <div class="nav-links" role="menubar">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#contact" class="nav-link">Contact</a>
+      <div class="nav-links">
+        <a href="#about" class="nav-item">About</a>
+        <a href="#skills" class="nav-item">Skills</a>
+        <a href="#projects" class="nav-item">Projects</a>
+        <a href="#contact" class="nav-item">Contact</a>
       </div>
-
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span>
       </button>
-
       <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
         <hr style="border:none;height:1px;background:rgba(255,255,255,0.04);margin:8px 0">
-        <button id="themeToggleMobile" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted)">Toggle theme</button>
+        <button id="themeToggle" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);">Toggle Theme</button>
       </div>
     </div>
   </nav>
 
-  <main id="main" class="container" style="padding-top:78px;">
+  <main class="container" style="padding-top:78px;">
 
     <!-- HERO -->
     <header>
-      <div class="blob" aria-hidden="true"></div>
-
       <div class="hero">
         <div>
           <h1>Hi, I'm Ravi — Full Stack Developer</h1>
           <p class="lead">I build scalable, accessible & modern web applications using React, Node.js, AWS and 3D Web technologies. I focus on clear UX, performance and accessibility.</p>
-
           <div class="cta">
             <a class="btn btn-primary" href="./resume.pdf" download>Download Resume</a>
             <a class="btn btn-ghost" href="#projects">View Projects</a>
             <button id="themeToggleTop" class="btn btn-ghost" aria-label="Toggle theme">Toggle</button>
           </div>
-
-          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;">
             <div class="skill-pill">Final-year CSE</div>
             <div class="skill-pill">Accessible 3D UI</div>
             <div class="skill-pill">Open-source contributor</div>
           </div>
         </div>
 
-        <aside class="hero-card" aria-hidden="false">
-          <h3 style="margin:0 0 8px">Live Demo (3D)</h3>
+        <aside class="hero-card">
+          <h3>Live Demo (3D)</h3>
           <div id="heroCanvas" class="hero-canvas" aria-hidden="true"></div>
           <p style="margin-top:10px;color:var(--muted);font-size:0.95rem">Interactive 3D cube demonstrates WebGL / Three.js usage — click and drag to rotate.</p>
           <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-            <a class="btn btn-ghost" href="https://github.com/Ravi8855" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a class="btn btn-ghost" href="https://www.linkedin.com/in/ravi-s-b7b86135a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="btn-ghost" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
+            <a class="btn-ghost" href="https://www.linkedin.com/in/ravi-s-b7b86135a/" target="_blank">LinkedIn</a>
           </div>
         </aside>
       </div>
@@ -182,22 +162,10 @@
     <section id="skills" data-aos="fade-up">
       <h2>Skills</h2>
       <div class="skills-grid">
-        <div class="card">
-          <strong>Frontend</strong>
-          <div style="margin-top:8px" class="tag">React · Next.js · Tailwind · HTML/CSS</div>
-        </div>
-        <div class="card">
-          <strong>Backend</strong>
-          <div style="margin-top:8px" class="tag">Node.js · Express · MySQL · SQLite</div>
-        </div>
-        <div class="card">
-          <strong>Cloud & DevOps</strong>
-          <div style="margin-top:8px" class="tag">AWS EC2 · S3 · Git · Docker (basics)</div>
-        </div>
-        <div class="card">
-          <strong>3D & ML</strong>
-          <div style="margin-top:8px" class="tag">Three.js · WebGL · ML for ISL</div>
-        </div>
+        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>Frontend</strong><div class="tag" style="margin-top:6px">React • Next.js • Tailwind • HTML/CSS</div></div></div>
+        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>Backend</strong><div class="tag" style="margin-top:6px">Node.js • Express • MySQL • SQLite</div></div></div>
+        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>Cloud & DevOps</strong><div class="tag" style="margin-top:6px">AWS EC2 • S3 • Git • Docker (basics)</div></div></div>
+        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>3D & ML</strong><div class="tag" style="margin-top:6px">Three.js • WebGL • ML for ISL</div></div></div>
       </div>
     </section>
 
@@ -206,63 +174,59 @@
       <h2>Projects</h2>
       <div class="projects">
 
-        <!-- SIGN FUSION -->
         <article class="proj-card" data-aos="zoom-in">
-          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1526378722051-8f1b7b8b4ca3?q=80&w=1200&auto=format&fit=crop');background-size:cover;background-position:center"></div>
+          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1526378722051-8f1b7b8b4ca3?q=80');background-size:cover;background-position:center"></div>
           <div>
             <div class="proj-title">ISL Translator — Sign Fusion</div>
-            <div class="proj-desc">Real-time Indian Sign Language translator combining ML with a 3D avatar interface to render signs visually.</div>
+            <div class="proj-desc">Real-time ISL translator using ML + animated 3D avatar.</div>
             <div class="proj-meta">
               <div class="tech-tags"><span class="tag">React</span><span class="tag">Three.js</span><span class="tag">ML</span></div>
               <div class="project-links">
-                <a class="btn-live" href="https://sign-fusion.vercel.app" target="_blank" rel="noopener noreferrer">Live</a>
-                <a class="btn-code" href="https://github.com/mdismail25/Sign-Fusion" target="_blank" rel="noopener noreferrer">Code</a>
+                <a class="btn-live" href="https://sign-fusion.vercel.app" target="_blank">Live</a>
+                <a class="btn-code" href="https://github.com/mdismail25/Sign-Fusion" target="_blank">Code</a>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- LEARNSIGN -->
         <article class="proj-card" data-aos="zoom-in" data-aos-delay="80">
-          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop');background-size:cover;background-position:center"></div>
+          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80');background-size:cover;background-position:center"></div>
           <div>
             <div class="proj-title">LearnSign — 3D Avatar Learning</div>
-            <div class="proj-desc">Interactive 3D avatar that animates letters and words to teach sign language effectively with an accessibility-first design.</div>
+            <div class="proj-desc">3D avatar that teaches ISL alphabets & words via animations.</div>
             <div class="proj-meta">
               <div class="tech-tags"><span class="tag">Three.js</span><span class="tag">GLTF</span></div>
               <div class="project-links">
-                <a class="btn-live" href="https://learnsign-demo.vercel.app" target="_blank" rel="noopener noreferrer">Live</a>
-                <a class="btn-code" href="https://github.com/Ravi8855" target="_blank" rel="noopener noreferrer">Code</a>
+                <a class="btn-live" href="https://learnsign-demo.vercel.app" target="_blank">Live</a>
+                <a class="btn-code" href="https://github.com/Ravi8855/LearnSign-3D-Avatar" target="_blank">Code</a>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- FEEDBACK -->
         <article class="proj-card" data-aos="zoom-in" data-aos-delay="160">
           <div class="proj-thumb" style="background:#071b24;display:flex;align-items:center;justify-content:center">Feedback</div>
           <div>
             <div class="proj-title">Feedback System</div>
-            <div class="proj-desc">Full-stack feedback application built with React, Node.js and SQLite for lightweight deployments.</div>
+            <div class="proj-desc">Full-stack feedback app using React + Node + SQLite.</div>
             <div class="proj-meta">
               <div class="tech-tags"><span class="tag">React</span><span class="tag">Node</span></div>
               <div class="project-links">
-                <a class="btn-code" href="https://github.com/Ravi8855/Feedback-App" target="_blank" rel="noopener noreferrer">Code</a>
+                <a class="btn-code" href="https://github.com/Ravi8855/Feedback-App" target="_blank">Code</a>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- UNIT CONVERTER -->
         <article class="proj-card" data-aos="zoom-in" data-aos-delay="240">
           <div class="proj-thumb" style="background:#071b24;display:flex;align-items:center;justify-content:center">Unit Converter</div>
           <div>
             <div class="proj-title">Unit Converter — Android App</div>
-            <div class="proj-desc">Lightweight Android app for offline unit conversions with a clean, responsive interface.</div>
+            <div class="proj-desc">Fast Android conversion app written in Java.</div>
             <div class="proj-meta">
               <div class="tech-tags"><span class="tag">Android</span><span class="tag">Java</span></div>
               <div class="project-links">
-                <a class="btn-code" href="https://github.com/Ravi8855" target="_blank" rel="noopener noreferrer">Code</a>
+                <a class="btn-code" href="https://github.com/Ravi8855/Unit-Converter-App" target="_blank">Code</a>
               </div>
             </div>
           </div>
@@ -271,24 +235,33 @@
       </div>
     </section>
 
-    <!-- CONTACT (UNCHANGED) -->
+    <!-- CONTACT (updated formatting only) -->
     <section id="contact" data-aos="fade-up">
       <h2>Contact Me</h2>
-      <div class="card">
-        <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST">
+      <div class="card" style="max-width:650px;margin:auto;padding:30px 24px;border-radius:16px;">
+        <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST" style="display:grid;gap:18px;">
           <input type="hidden" name="_captcha" value="false">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
-          <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-          <button class="submit" type="submit">Send Message</button>
+
+          <input type="text" name="name" placeholder="Your Name" required
+            style="padding:14px;border-radius:10px;font-size:1rem;background:#0b1a25;border:1px solid rgba(255,255,255,0.15);color:white;">
+
+          <input type="email" name="email" placeholder="Your Email" required
+            style="padding:14px;border-radius:10px;font-size:1rem;background:#0b1a25;border:1px solid rgba(255,255,255,0.15);color:white;">
+
+          <textarea name="message" rows="5" placeholder="Your Message" required
+            style="padding:14px;border-radius:10px;font-size:1rem;background:#0b1a25;border:1px solid rgba(255,255,255,0.15);color:white;resize:none;"></textarea>
+
+          <button class="submit" type="submit"
+            style="padding:14px;border-radius:12px;font-size:1.1rem;font-weight:700;background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:#001;cursor:pointer;">Send Message</button>
         </form>
       </div>
     </section>
 
     <footer>© 2025 Ravi • Built with care • Available for internships & roles</footer>
+
   </main>
 
-  <!-- Dependencies -->
+  <!-- Dependencies: AOS, GSAP, Three.js -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
@@ -296,113 +269,74 @@
   <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 
   <script>
-    // Init AOS
+    // AOS init
     AOS.init({ duration:650, once:true, easing:'cubic-bezier(.2,.8,.2,1)' });
 
-    // Smooth active nav highlighting
-    const navLinks = Array.from(document.querySelectorAll('.nav-link'));
-    const sections = ['about','skills','projects','contact'].map(id => document.getElementById(id));
+    // Navbar active on scroll
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = ['about','skills','projects','contact'].map(id=>document.getElementById(id));
     function onScroll(){
-      const y = window.scrollY + 140; // offset for fixed navbar
-      sections.forEach((sec, i) => {
+      const y = window.scrollY + 120;
+      sections.forEach((sec,i)=>{
         if(!sec) return;
         const top = sec.offsetTop;
         const bottom = top + sec.offsetHeight;
-        if(y >= top && y < bottom){
-          navLinks.forEach(l => l.classList.remove('active'));
-          if(navLinks[i]) navLinks[i].classList.add('active');
-        }
+        if(y>=top && y<bottom){ navItems.forEach(n=>n.classList.remove('active')); navItems[i].classList.add('active'); }
       });
-      // navbar background change on scroll
-      const nav = document.querySelector('nav');
-      if(window.scrollY > 40) nav.style.background = 'rgba(4,8,12,0.9)';
-      else nav.style.background = '';
+      // navbar shrink
+      const nav = document.querySelector('nav'); if(window.scrollY>40) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
     }
-    window.addEventListener('scroll', onScroll);
-    onScroll();
+    window.addEventListener('scroll', onScroll); onScroll();
 
-    // Hamburger mobile menu
+    // Hamburger + mobile menu
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileMenu.style.display === 'flex';
-      mobileMenu.style.display = isOpen ? 'none' : 'flex';
-      hamburger.setAttribute('aria-expanded', String(!isOpen));
-      mobileMenu.setAttribute('aria-hidden', String(isOpen));
-    });
-    // Close mobile menu when a link clicked
-    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>{ mobileMenu.style.display = 'none'; hamburger.setAttribute('aria-expanded','false'); }));
+    hamburger.addEventListener('click', ()=>{ const open = mobileMenu.style.display==='flex'; mobileMenu.style.display = open? 'none':'flex'; mobileMenu.setAttribute('aria-hidden', open); });
 
     // Theme toggle (top and mobile)
+    const themeToggle = document.getElementById('themeToggle');
     const themeToggleTop = document.getElementById('themeToggleTop');
-    const themeToggleMobile = document.getElementById('themeToggleMobile');
     function toggleTheme(){ document.body.classList.toggle('light'); }
+    if(themeToggle) themeToggle.addEventListener('click', toggleTheme);
     if(themeToggleTop) themeToggleTop.addEventListener('click', toggleTheme);
-    if(themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
 
-    // GSAP entrance polish
+    // GSAP entrance
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('h1',{y:18,opacity:0,duration:0.8,ease:'power3.out'});
     gsap.from('.lead',{y:12,opacity:0,duration:0.8,delay:0.12});
-    gsap.utils.toArray('.proj-card').forEach((card,i) => {
-      gsap.from(card, { y:20, opacity:0, duration:0.7, delay:0.12 + i*0.06, scrollTrigger:{trigger:card, start:'top 85%'} });
-    });
 
     // Three.js simple interactive cube in heroCanvas
     (function(){
-      const wrap = document.getElementById('heroCanvas');
-      if(!wrap) return;
+      const canvasWrap = document.getElementById('heroCanvas');
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(50, wrap.clientWidth / wrap.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-      renderer.setSize(wrap.clientWidth, wrap.clientHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      wrap.appendChild(renderer.domElement);
+      const camera = new THREE.PerspectiveCamera(45, canvasWrap.clientWidth / canvasWrap.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+      renderer.setSize(canvasWrap.clientWidth, canvasWrap.clientHeight); renderer.setPixelRatio(window.devicePixelRatio);
+      canvasWrap.appendChild(renderer.domElement);
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-      dirLight.position.set(5, 10, 7);
-      scene.add(dirLight);
-      const amb = new THREE.AmbientLight(0xffffff, 0.25);
-      scene.add(amb);
+      const light = new THREE.DirectionalLight(0xffffff,1); light.position.set(5,10,7); scene.add(light);
+      const amb = new THREE.AmbientLight(0xffffff,0.25); scene.add(amb);
 
-      const geom = new THREE.BoxGeometry(1.8, 1.2, 0.4);
-      const mat = new THREE.MeshStandardMaterial({ color: 0x00eaff, metalness:0.15, roughness:0.35, emissive:0x002b33, emissiveIntensity:0.15 });
-      const mesh = new THREE.Mesh(geom, mat);
-      scene.add(mesh);
+      const geometry = new THREE.BoxGeometry(1.8,1.2,0.4);
+      const material = new THREE.MeshStandardMaterial({color:0x00eaff, metalness:0.2, roughness:0.3, emissive:0x003744, emissiveIntensity:0.2});
+      const cube = new THREE.Mesh(geometry, material); scene.add(cube);
 
-      camera.position.z = 4.2;
+      camera.position.z = 4;
+      // OrbitControls
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true; controls.enablePan = false;
-      controls.autoRotate = true; controls.autoRotateSpeed = 0.45;
-      controls.minDistance = 2.4; controls.maxDistance = 8;
+      controls.enableDamping = true; controls.enablePan = false; controls.minDistance = 2.2; controls.maxDistance = 8; controls.autoRotate = true; controls.autoRotateSpeed = 0.6;
 
-      function onResize(){
-        renderer.setSize(wrap.clientWidth, wrap.clientHeight);
-        camera.aspect = wrap.clientWidth / wrap.clientHeight;
-        camera.updateProjectionMatrix();
-      }
+      function onResize(){ renderer.setSize(canvasWrap.clientWidth, canvasWrap.clientHeight); camera.aspect = canvasWrap.clientWidth / canvasWrap.clientHeight; camera.updateProjectionMatrix(); }
       window.addEventListener('resize', onResize);
 
-      function animate(){
-        requestAnimationFrame(animate);
-        mesh.rotation.y += 0.004;
-        controls.update();
-        renderer.render(scene, camera);
-      }
-      animate();
+      function animate(){ requestAnimationFrame(animate); cube.rotation.y += 0.004; controls.update(); renderer.render(scene,camera);} animate();
     })();
 
-    // Ensure project links open safely (redundant safety)
-    document.querySelectorAll('.project-links a, .btn-live, .btn-code').forEach(a=>{
-      a.setAttribute('rel','noopener noreferrer');
-    });
-
-    // Improve keyboard focus visibility
-    document.addEventListener('keyup', (e)=>{
-      if(e.key === 'Tab') document.documentElement.classList.add('show-focus');
-    });
+    // Ensure project links open and no blocked overlays
+    document.querySelectorAll('.project-links a').forEach(a=>{ a.setAttribute('rel','noopener noreferrer'); a.addEventListener('click', ()=>{}); });
 
   </script>
 </body>
 </html>
+
 
