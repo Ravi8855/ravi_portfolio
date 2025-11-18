@@ -11,142 +11,329 @@
 
   <style>
     :root{
-      --bg:#041018; --bg-soft:#071826; --text:#eaf6fb; --muted:#9fb2bd;
-      --accent1:#00eaff; --accent2:#4be3ff; --card:#0d1720; --glass:rgba(255,255,255,0.06);
-      --radius:14px; --maxw:1200px;
+      --bg:#0a0e14; --text:#f0f4f8; --muted:#94a3b8;
+      --accent1:#00d9ff; --accent2:#00b8d4;
+      --card:#131a24; --glass:rgba(255,255,255,0.05);
+      --radius:16px; --maxw:1280px; --transition:.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-sm:0 2px 8px rgba(0,0,0,0.3);
+      --shadow-md:0 4px 16px rgba(0,0,0,0.4);
+      --shadow-lg:0 8px 32px rgba(0,0,0,0.5);
+      --shadow-glow:0 0 24px rgba(0,217,255,0.15);
     }
 
-    /* Reset */
+    /* Reset & base */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased}
-    a{color:inherit}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.7; scroll-behavior:smooth; 
+      transition: background var(--transition), color var(--transition); font-size:16px;}
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%;display:block; height:auto}
+    button{font-family:inherit; cursor:pointer}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 
-    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    /* Skip link */
+    .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip-link:focus{left:10px;top:10px;width:auto;height:auto;padding:8px 12px;background:#fff;color:#000;border-radius:6px;z-index:9999}
 
-    /* NAVBAR */
-    nav{position:fixed;left:0;right:0;top:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:10px 0;background:linear-gradient(180deg, rgba(4,8,12,0.6), rgba(4,8,12,0.35));backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.03)}
-    .nav-inner{width:100%;max-width:var(--maxw);display:flex;align-items:center;justify-content:space-between;padding:6px 10px}
-    .logo{font-weight:800;font-size:1.35rem;color:var(--accent1)}
-    .nav-links{display:flex;gap:20px;align-items:center}
-    .nav-links a{color:var(--muted);font-weight:600;padding:6px 8px;border-radius:8px}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent1);background:rgba(255,255,255,0.02)}
+    /* Page Title */
+    .page-title{position:fixed;top:72px;left:0;right:0;z-index:1100;padding:12px 0;background:linear-gradient(180deg, rgba(10,14,20,0.9), transparent);
+      backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.04);opacity:0;transform:translateY(-20px);
+      transition:opacity 0.3s, transform 0.3s;pointer-events:none}
+    .page-title.visible{opacity:1;transform:translateY(0)}
+    .page-title-content{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:12px}
+    .page-title-content span{color:var(--muted);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+    .page-title-content h1{color:var(--text);font-size:1.1rem;font-weight:700;margin:0;background:linear-gradient(135deg, var(--text), var(--accent1));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-    /* Hamburger */
+    /* NAV */
+    nav{position:fixed;left:0;right:0;top:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:16px 0;
+      background:linear-gradient(180deg, rgba(10,14,20,0.85), rgba(10,14,20,0.5));backdrop-filter:blur(20px) saturate(180%);
+      border-bottom:1px solid rgba(255,255,255,0.06);box-shadow:var(--shadow-sm);
+      transition:background var(--transition), box-shadow var(--transition)}
+    nav.scrolled{background:rgba(10,14,20,0.95);box-shadow:var(--shadow-md)}
+    .nav-inner{width:100%;max-width:var(--maxw);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+    .logo{font-weight:800;font-size:1.5rem;color:var(--accent1);letter-spacing:-0.5px;background:linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:8px;align-items:center}
+    .nav-links a{color:var(--muted);font-weight:500;font-size:0.95rem;padding:10px 16px;border-radius:10px;transition:all var(--transition);
+      position:relative}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);transform:translateY(-1px)}
+    .nav-links a.active{color:var(--accent1);background:rgba(0,217,255,0.1)}
+
+    /* Hamburger for mobile */
     .hamburger{display:none;width:44px;height:40px;border-radius:8px;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.03);cursor:pointer;background:transparent}
     .hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;position:relative}
     .hamburger span:before,.hamburger span:after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--text);border-radius:2px}
     .hamburger span:before{top:-6px}
     .hamburger span:after{top:6px}
 
-    /* mobile menu */
+    /* Mobile menu */
     .mobile-menu{position:fixed;top:64px;right:18px;background:var(--card);border-radius:12px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;flex-direction:column;gap:8px}
     .mobile-menu a{padding:10px 12px;border-radius:8px;color:var(--muted)}
     .mobile-menu a:hover{color:var(--accent1);background:rgba(255,255,255,0.02)}
 
     /* HERO */
-    header{padding:140px 0 80px;position:relative;overflow:visible}
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center}
-    h1{font-size:3rem;line-height:1.02;margin-bottom:12px}
-    .lead{color:var(--muted);font-size:1.05rem;max-width:60ch;margin-bottom:18px}
-    .cta{display:flex;gap:14px;flex-wrap:wrap}
-    .btn{padding:12px 18px;border-radius:12px;font-weight:700}
-    .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#001}
-    .btn-ghost{border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    header{padding:160px 0 100px;position:relative;overflow:visible}
+    .blob{position:absolute;right:-120px;top:-160px;width:600px;height:600px;border-radius:50%;
+      background:radial-gradient(circle,rgba(0,217,255,0.12),transparent 70%);filter:blur(60px);pointer-events:none;z-index:0}
+    .hero{display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:center;position:relative;z-index:1}
+    h1{font-size:clamp(2.5rem, 5vw, 3.5rem);line-height:1.1;margin-bottom:20px;font-weight:800;letter-spacing:-1px;
+      background:linear-gradient(135deg, var(--text) 0%, var(--text) 50%, var(--muted) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .lead{color:var(--muted);font-size:1.15rem;max-width:65ch;margin-bottom:32px;opacity:0.95;line-height:1.8;font-weight:400}
+    .cta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+    .btn{padding:14px 28px;border-radius:12px;font-weight:600;font-size:1rem;transition:all var(--transition);border:none;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;position:relative;overflow:hidden}
+    .btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#001;box-shadow:var(--shadow-glow);
+      transform:translateY(0)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(0,217,255,0.25);color:#001}
+    .btn-ghost{border:1.5px solid rgba(255,255,255,0.1);color:var(--text);background:rgba(255,255,255,0.03)}
+    .btn-ghost:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);transform:translateY(-2px);color:var(--text)}
 
-    /* 3D canvas hero */
-    .hero-canvas{width:100%;height:320px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,0.15),transparent)}
+    /* hero canvas */
+    .hero-canvas{width:100%;height:360px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,0.2),transparent);
+      box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,0.05)}
 
     /* hero card */
-    .hero-card{background:var(--glass);padding:22px;border-radius:14px;border:1px solid rgba(255,255,255,0.08)}
+    .hero-card{background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));padding:28px;border-radius:16px;
+      border:1px solid rgba(255,255,255,0.1);box-shadow:var(--shadow-md);backdrop-filter:blur(10px)}
 
     /* sections */
-    section{padding:80px 0}
-    h2{text-align:center;margin-bottom:28px;font-size:2.1rem}
-    .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
+    section{padding:100px 0;position:relative}
+    section:not(:last-child)::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+      width:100px;height:1px;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)}
+    h2{text-align:center;margin-bottom:48px;font-size:clamp(2rem, 4vw, 2.75rem);font-weight:800;letter-spacing:-0.5px;
+      background:linear-gradient(135deg, var(--text), var(--muted));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      opacity:0;transform:translateY(20px)}
+    .card{background:linear-gradient(135deg, var(--card), rgba(19,26,36,0.8));padding:24px;border-radius:16px;
+      border:1px solid rgba(255,255,255,0.08);box-shadow:var(--shadow-sm);transition:all var(--transition)}
+    .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(255,255,255,0.12)}
 
-    /* skills grid */
-    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-    .skill-pill{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    /* skills */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;position:relative}
+    .skill-card{opacity:0;transform:translateX(-100px) rotateY(-15deg);position:relative;overflow:hidden;
+      transition:all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);filter:blur(4px)}
+    .skill-card:nth-child(even){transform:translateX(100px) rotateY(15deg)}
+    .skill-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+      background:linear-gradient(135deg, rgba(0,217,255,0.15), transparent);
+      opacity:0;transition:opacity 0.4s ease;z-index:0}
+    .skill-card:hover::before{opacity:1}
+    .skill-card:hover{transform:translateX(0) translateY(-8px) rotateY(0deg) scale(1.03);
+      box-shadow:var(--shadow-lg), 0 0 35px rgba(0,217,255,0.3), 0 0 60px rgba(0,217,255,0.1);
+      border-color:rgba(0,217,255,0.4);filter:blur(0px)}
+    .skill-card strong{display:block;margin-bottom:12px;font-size:1.1rem;color:var(--text);
+      transition:all 0.4s;position:relative;z-index:1}
+    .skill-card:hover strong{color:var(--accent1);text-shadow:0 0 20px rgba(0,217,255,0.5);transform:translateX(4px)}
+    .skill-pill{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;
+      background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+      transition:all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);font-weight:500;position:relative;overflow:hidden;z-index:1}
+    .skill-pill::after{content:'';position:absolute;top:0;left:0;width:0;height:100%;
+      background:linear-gradient(90deg, rgba(0,217,255,0.2), transparent);
+      transition:width 0.5s ease}
+    .skill-pill:hover::after{width:100%}
+    .skill-pill:hover{background:rgba(0,217,255,0.1);border-color:rgba(0,217,255,0.4);
+      transform:translateX(8px) scale(1.05);box-shadow:0 6px 20px rgba(0,217,255,0.2)}
+    .tag{background:rgba(255,255,255,0.05);padding:6px 14px;border-radius:20px;font-size:0.875rem;color:var(--muted);
+      border:1px solid rgba(255,255,255,0.05);font-weight:500;display:inline-block;margin:4px 4px 4px 0;
+      transition:all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);position:relative;overflow:hidden}
+    .tag::before{content:'';position:absolute;inset:0;border-radius:20px;
+      background:linear-gradient(135deg, rgba(0,217,255,0.2), rgba(0,184,212,0.2));
+      opacity:0;transition:opacity 0.3s}
+    .tag:hover::before{opacity:1}
+    .tag:hover{background:rgba(0,217,255,0.15);border-color:rgba(0,217,255,0.4);
+      color:var(--accent1);transform:translateY(-3px) scale(1.1);box-shadow:0 4px 12px rgba(0,217,255,0.25)}
 
     /* projects */
-    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    .proj-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:10px}
-    .proj-thumb{width:100%;height:160px;border-radius:10px;object-fit:cover;background:#071b24;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600}
-    .proj-meta{display:flex;justify-content:space-between;align-items:center}
-    .tech-tags{display:flex;gap:8px;flex-wrap:wrap}
-    .tag{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;font-size:0.85rem;color:var(--muted)}
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+    .proj-card{background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));border-radius:16px;padding:0;
+      border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;cursor:pointer;
+      transition:all var(--transition);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .proj-card:focus{outline:2px solid rgba(0,217,255,0.3);outline-offset:4px}
+    .proj-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg), var(--shadow-glow);border-color:rgba(255,255,255,0.15)}
+    .proj-thumb{width:100%;height:200px;border-radius:0;object-fit:cover;background:linear-gradient(135deg, #0a1620, #071b24);
+      display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;position:relative;overflow:hidden}
+    .proj-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent, rgba(0,0,0,0.3))}
+    .proj-card > div:last-child{padding:20px;display:flex;flex-direction:column;gap:12px}
+    .proj-title{font-size:1.25rem;font-weight:700;color:var(--text);line-height:1.3}
+    .proj-desc{color:var(--muted);font-size:0.95rem;margin-top:4px;line-height:1.6}
+
+    .proj-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px;gap:12px;flex-wrap:wrap}
+    .project-links{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-live{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#001;padding:10px 18px;border-radius:10px;
+      font-weight:600;font-size:0.9rem;transition:all var(--transition);text-decoration:none;display:inline-flex;align-items:center;
+      box-shadow:0 2px 8px rgba(0,217,255,0.2)}
+    .btn-live:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,217,255,0.3);color:#001}
+    .btn-code{padding:10px 18px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);font-weight:600;color:var(--text);
+      font-size:0.9rem;background:rgba(255,255,255,0.03);transition:all var(--transition);text-decoration:none;display:inline-flex;align-items:center}
+    .btn-code:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);transform:translateY(-2px);color:var(--text)}
+
+    /* github stats badge (small) */
+    .gh-stats{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:0.9rem}
+
+    /* achievements */
+    .achievements{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;position:relative}
+    .ach-card{background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));padding:32px 24px;border-radius:16px;
+      border:1px solid rgba(255,255,255,0.08);text-align:center;transition:all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow:var(--shadow-sm);opacity:0;transform:scale(0.3) rotateZ(-180deg);
+      position:relative;overflow:hidden;filter:blur(8px)}
+    .ach-card::before{content:'';position:absolute;inset:-2px;border-radius:18px;
+      background:linear-gradient(45deg, rgba(0,217,255,0.4), rgba(0,184,212,0.4), rgba(0,217,255,0.4));
+      background-size:200% 200%;opacity:0;transition:opacity 0.5s;z-index:-1;
+      animation:gradientShift 3s ease infinite}
+    @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .ach-card:hover::before{opacity:1}
+    .ach-card::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;
+      background:radial-gradient(circle, rgba(0,217,255,0.3), transparent);
+      border-radius:50%;transform:translate(-50%, -50%);transition:width 0.6s, height 0.6s}
+    .ach-card:hover::after{width:300px;height:300px}
+    .ach-card:hover{transform:scale(1.08) rotateZ(0deg);
+      box-shadow:var(--shadow-lg), 0 0 50px rgba(0,217,255,0.4), 0 0 100px rgba(0,217,255,0.2);
+      border-color:rgba(0,217,255,0.5);background:linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05));
+      filter:blur(0px)}
+    .ach-card > div:first-child{position:relative;z-index:1;transition:all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)}
+    .ach-card:hover > div:first-child{transform:scale(1.1) rotateZ(2deg);color:var(--accent1);
+      text-shadow:0 0 25px rgba(0,217,255,0.6)}
+    .ach-card > div:last-child{position:relative;z-index:1;transition:all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)}
+    .ach-card:hover > div:last-child{transform:scale(1.05);color:var(--text);opacity:1}
+
+    /* education cards */
+    .education-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(0,217,255,0.3);
+      background:rgba(255,255,255,0.05)}
+
+    /* modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;z-index:2000;padding:24px;animation:fadeIn 0.3s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal.open{display:flex}
+    .modal-panel{background:linear-gradient(135deg, var(--card), rgba(19,26,36,0.95));color:var(--text);padding:32px;border-radius:20px;
+      max-width:920px;width:100%;max-height:92vh;overflow:auto;position:relative;border:1px solid rgba(255,255,255,0.1);
+      box-shadow:var(--shadow-lg);animation:slideUp 0.3s ease}
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .modal-carousel{display:flex;gap:10px;align-items:center}
+    .modal-thumb{width:100%;height:360px;border-radius:12px;background:linear-gradient(135deg, #0a1620, #071b24);
+      display:flex;align-items:center;justify-content:center;color:var(--muted);box-shadow:var(--shadow-md);
+      border:1px solid rgba(255,255,255,0.05)}
+    .modal-close{position:absolute;right:20px;top:20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+      color:var(--text);font-size:1.5rem;cursor:pointer;width:40px;height:40px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
+    .modal-close:hover{background:rgba(255,255,255,0.1);transform:rotate(90deg)}
+
+    /* modal controls */
+    .carousel-controls{display:flex;gap:12px;margin-top:16px;justify-content:center}
+    .carousel-btn{padding:10px 20px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);
+      color:var(--text);cursor:pointer;font-weight:600;transition:all var(--transition);font-size:0.9rem}
+    .carousel-btn:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);transform:translateY(-2px)}
 
     /* footer */
-    footer{text-align:center;padding:36px 0;color:var(--muted)}
+    footer{text-align:center;padding:48px 0;color:var(--muted);font-size:0.95rem;border-top:1px solid rgba(255,255,255,0.06);
+      margin-top:60px}
 
-    /* light mode */
-    body.light{--bg:#f7fbff;--text:#031021;--muted:#5b6b75;--card:#ffffff;--glass:rgba(2,6,10,0.03)}
+    /* light mode toggle */
+    body.light{--bg:#f8fafc;--text:#0f172a;--muted:#475569;--card:#ffffff;--glass:rgba(2,6,10,0.04);
+      --shadow-sm:0 2px 8px rgba(0,0,0,0.08);--shadow-md:0 4px 16px rgba(0,0,0,0.12);--shadow-lg:0 8px 32px rgba(0,0,0,0.16)}
     body.light .btn-primary{color:#001}
+    body.light nav{background:linear-gradient(180deg, rgba(248,250,252,0.9), rgba(248,250,252,0.7));
+      border-bottom:1px solid rgba(0,0,0,0.08)}
+    body.light .card{border-color:rgba(0,0,0,0.08)}
 
     /* responsive */
-    @media(max-width:980px){.hero{grid-template-columns:1fr 360px}}
-    @media(max-width:760px){
-      .hero{grid-template-columns:1fr}
+    @media (max-width:980px){ 
+      .hero{grid-template-columns:1fr 360px;gap:40px} 
+      section{padding:80px 0}
+    }
+    @media (max-width:760px){
+      .hero{grid-template-columns:1fr;gap:32px}
       .hamburger{display:flex}
       .nav-links{display:none}
-      .mobile-menu{display:flex}
-      .hero-canvas{height:220px}
+      .mobile-menu{display:none;flex-direction:column}
+      .hero-canvas{height:240px}
+      .modal-panel{max-width:96vw;padding:24px}
+      .projects{grid-template-columns:1fr}
+      .skills-grid{grid-template-columns:1fr}
+      .achievements{grid-template-columns:1fr}
+      section{padding:60px 0}
+      h2{margin-bottom:32px}
+      .container{padding:0 20px}
     }
+
+    /* subtle focus style when keyboard used */
+    .show-focus :focus{outline:2px solid rgba(0,234,255,0.16);outline-offset:2px;border-radius:6px}
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-  <nav>
+  <!-- NAV -->
+  <nav id="mainNav" aria-label="Main navigation">
     <div class="nav-inner container">
       <div class="logo">Ravi.</div>
-      <div class="nav-links">
-        <a href="#about" class="nav-item">About</a>
-        <a href="#skills" class="nav-item">Skills</a>
-        <a href="#projects" class="nav-item">Projects</a>
-        <a href="#contact" class="nav-item">Contact</a>
+
+      <div class="nav-links" role="menubar">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#achievements" class="nav-link">Achievements</a>
+        <a href="#internship" class="nav-link">Internship</a>
+        <a href="#contact" class="nav-link">Contact</a>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
+
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span>
       </button>
+
       <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#internship">Internship</a>
         <a href="#contact">Contact</a>
         <hr style="border:none;height:1px;background:rgba(255,255,255,0.04);margin:8px 0">
-        <button id="themeToggle" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);">Toggle Theme</button>
+        <button id="themeToggleMobile" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted)">Toggle theme</button>
       </div>
     </div>
   </nav>
 
-  <main class="container" style="padding-top:78px;">
+  <!-- Page Title -->
+  <div class="page-title" id="pageTitle">
+    <div class="page-title-content">
+      <span>Current Page:</span>
+      <h1 id="currentPageName">Home</h1>
+    </div>
+  </div>
+
+  <main id="main" class="container" style="padding-top:120px;">
 
     <!-- HERO -->
     <header>
+      <div class="blob" aria-hidden="true"></div>
+
       <div class="hero">
         <div>
           <h1>Hi, I'm Ravi — Full Stack Developer</h1>
           <p class="lead">I build scalable, accessible & modern web applications using React, Node.js, AWS and 3D Web technologies. I focus on clear UX, performance and accessibility.</p>
+
           <div class="cta">
             <a class="btn btn-primary" href="./resume.pdf" download>Download Resume</a>
             <a class="btn btn-ghost" href="#projects">View Projects</a>
             <button id="themeToggleTop" class="btn btn-ghost" aria-label="Toggle theme">Toggle</button>
           </div>
-          <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;">
+
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
             <div class="skill-pill">Final-year CSE</div>
             <div class="skill-pill">Accessible 3D UI</div>
             <div class="skill-pill">Open-source contributor</div>
           </div>
         </div>
 
-        <aside class="hero-card">
-          <h3>Live Demo (3D)</h3>
+        <aside class="hero-card" aria-hidden="false">
+          <h3 style="margin:0 0 8px">Live Demo (3D)</h3>
           <div id="heroCanvas" class="hero-canvas" aria-hidden="true"></div>
           <p style="margin-top:10px;color:var(--muted);font-size:0.95rem">Interactive 3D cube demonstrates WebGL / Three.js usage — click and drag to rotate.</p>
           <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-            <a class="btn-ghost" href="https://github.com/Ravi8855" target="_blank">GitHub</a>
-            <a class="btn-ghost" href="https://www.linkedin.com/in/ravi-s-b7b86135a/" target="_blank">LinkedIn</a>
+            <a class="btn btn-ghost" href="https://github.com/Ravi8855" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/ravi-s-b7b86135a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
         </aside>
       </div>
@@ -155,227 +342,1288 @@
     <!-- ABOUT -->
     <section id="about" data-aos="fade-up">
       <h2>About Me</h2>
-      <div class="card" style="max-width:850px;margin:auto;font-size:1.05rem;line-height:1.75;color:var(--text);opacity:0.95;padding:28px 24px;border-radius:16px;">
-        I am a passionate Full Stack Developer who loves building fast, accessible, and visually rich digital experiences.
-        My work focuses on merging modern frontend engineering with clean UX and emerging technologies like 3D Web (Three.js)
-        and lightweight machine‑learning integrations.
-        <br><br>
-        I enjoy creating tools that improve learning and communication — including ISL translators, interactive 3D avatars,
-        and user‑friendly full‑stack applications. With a strong foundation in React, Node.js, AWS, and UI engineering,
-        I continuously explore better ways to make technology intuitive, inclusive, and impactful.
+      <div class="card" style="max-width:900px;margin:auto;font-size:1.1rem;line-height:1.8;color:var(--text);padding:40px;border-radius:16px;">
+        <p style="margin-bottom:20px;font-size:1.15rem;color:var(--text);opacity:0.95">
+          I am a passionate Full Stack Developer who builds fast, accessible, and visually rich digital experiences.
+        </p>
+        <p style="margin-bottom:20px;color:var(--muted);opacity:0.9">
+          I combine modern frontend engineering with clean UX, and explore 3D Web (Three.js) and lightweight ML to create meaningful tools:
+        </p>
+        <ul style="margin-top:20px;line-height:2;list-style:none;padding-left:0">
+          <li style="margin-bottom:12px;padding-left:28px;position:relative">
+            <span style="position:absolute;left:0;color:var(--accent1);font-weight:700">→</span>
+            ISL translation tools and 3D avatars for accessible learning
+          </li>
+          <li style="margin-bottom:12px;padding-left:28px;position:relative">
+            <span style="position:absolute;left:0;color:var(--accent1);font-weight:700">→</span>
+            Production-ready webapps using React, Node.js and AWS
+          </li>
+          <li style="margin-bottom:12px;padding-left:28px;position:relative">
+            <span style="position:absolute;left:0;color:var(--accent1);font-weight:700">→</span>
+            Design-focused implementations with performance & accessibility in mind
+          </li>
+        </ul>
+        <p style="margin-top:24px;color:var(--muted);opacity:0.9;font-style:italic">
+          I enjoy simplifying complex problems and shipping features that users love.
+        </p>
+
+        <!-- Education Section -->
+        <div style="margin-top:40px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08)">
+          <h3 style="font-size:1.3rem;margin-bottom:24px;color:var(--text);display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.5rem">🎓</span>
+            Education
+          </h3>
+          
+          <div style="display:grid;gap:20px">
+            <!-- Bachelor's Degree -->
+            <div class="education-card" style="padding:20px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);transition:all 0.3s;position:relative;overflow:hidden;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
+                <div>
+                  <h4 style="font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px">Bachelor of Engineering – Computer Science</h4>
+                  <p style="color:var(--accent1);font-size:0.95rem;font-weight:600;margin:0">VTU Center for PG Studies, Mysuru</p>
+                </div>
+                <span style="color:var(--muted);font-size:0.9rem;white-space:nowrap">2022–2026</span>
+              </div>
+              <p style="color:var(--muted);font-size:0.95rem;margin:8px 0 0 0">
+                CGPA: <strong style="color:var(--text)">8.2 / 10</strong> (till 6th semester)
+              </p>
+            </div>
+
+            <!-- PU Science -->
+            <div class="education-card" style="padding:20px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);transition:all 0.3s;position:relative;overflow:hidden;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
+                <div>
+                  <h4 style="font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px">PU Science</h4>
+                  <p style="color:var(--accent1);font-size:0.95rem;font-weight:600;margin:0">Bendre PU Science & Commerce College, Dharwad</p>
+                </div>
+                <span style="color:var(--muted);font-size:0.9rem;white-space:nowrap">2020–2022</span>
+              </div>
+              <p style="color:var(--muted);font-size:0.95rem;margin:8px 0 0 0">
+                Percentage: <strong style="color:var(--text)">83%</strong>
+              </p>
+            </div>
+
+            <!-- SSLC -->
+            <div class="education-card" style="padding:20px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);transition:all 0.3s;position:relative;overflow:hidden;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
+                <div>
+                  <h4 style="font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px">SSLC</h4>
+                  <p style="color:var(--accent1);font-size:0.95rem;font-weight:600;margin:0">Morarji Desai Residential School, Shahapur</p>
+                </div>
+                <span style="color:var(--muted);font-size:0.9rem;white-space:nowrap">2019–2020</span>
+              </div>
+              <p style="color:var(--muted);font-size:0.95rem;margin:8px 0 0 0">
+                Percentage: <strong style="color:var(--text)">82%</strong>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- SKILLS --> -->
+    <!-- SKILLS -->
     <section id="skills" data-aos="fade-up">
       <h2>Skills</h2>
       <div class="skills-grid">
-        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>Frontend</strong><div class="tag" style="margin-top:6px">React • Next.js • Tailwind • HTML/CSS</div></div></div>
-        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>Backend</strong><div class="tag" style="margin-top:6px">Node.js • Express • MySQL • SQLite</div></div></div>
-        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>Cloud & DevOps</strong><div class="tag" style="margin-top:6px">AWS EC2 • S3 • Git • Docker (basics)</div></div></div>
-        <div class="card"><div style="display:flex;flex-direction:column;gap:8px"><strong>3D & ML</strong><div class="tag" style="margin-top:6px">Three.js • WebGL • ML for ISL</div></div></div>
+        <div class="card skill-card">
+          <strong>Frontend Development</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">React</span>
+            <span class="tag">Next.js</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">SASS/SCSS</span>
+            <span class="tag">Redux</span>
+            <span class="tag">Vue.js</span>
+            <span class="tag">Angular</span>
+            <span class="tag">Responsive Design</span>
+          </div>
+        </div>
+        
+        <div class="card skill-card">
+          <strong>Backend Development</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">Node.js</span>
+            <span class="tag">Express.js</span>
+            <span class="tag">RESTful APIs</span>
+            <span class="tag">GraphQL</span>
+            <span class="tag">Python</span>
+            <span class="tag">Django</span>
+            <span class="tag">Flask</span>
+            <span class="tag">Java</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">PHP</span>
+            <span class="tag">C#</span>
+            <span class="tag">.NET</span>
+          </div>
+        </div>
+        
+        <div class="card skill-card">
+          <strong>Databases</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">MySQL</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">Redis</span>
+            <span class="tag">Firebase</span>
+            <span class="tag">SQL</span>
+            <span class="tag">NoSQL</span>
+            <span class="tag">Database Design</span>
+            <span class="tag">ORM (Sequelize, Mongoose)</span>
+          </div>
+        </div>
+        
+        <div class="card skill-card">
+          <strong>Cloud & DevOps</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">AWS</span>
+            <span class="tag">EC2</span>
+            <span class="tag">S3</span>
+            <span class="tag">Lambda</span>
+            <span class="tag">Azure</span>
+            <span class="tag">Google Cloud</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Kubernetes</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">Git</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Jenkins</span>
+          </div>
+        </div>
+        
+        <div class="card skill-card">
+          <strong>Version Control & Tools</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">Git</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">GitLab</span>
+            <span class="tag">Bitbucket</span>
+            <span class="tag">JIRA</span>
+            <span class="tag">Confluence</span>
+            <span class="tag">Postman</span>
+            <span class="tag">Swagger</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Webpack</span>
+            <span class="tag">Vite</span>
+          </div>
+        </div>
+        
+        <div class="card skill-card">
+          <strong>Testing & Quality</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">Jest</span>
+            <span class="tag">Mocha</span>
+            <span class="tag">Chai</span>
+            <span class="tag">Cypress</span>
+            <span class="tag">Selenium</span>
+            <span class="tag">Unit Testing</span>
+            <span class="tag">Integration Testing</span>
+            <span class="tag">E2E Testing</span>
+            <span class="tag">TDD</span>
+            <span class="tag">Code Review</span>
+          </div>
+        </div>
+        
+      
+        
+        <div class="card skill-card">
+          <strong>Web Technologies</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">HTTP/HTTPS</span>
+            <span class="tag">WebSockets</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">GraphQL</span>
+            <span class="tag">JSON</span>
+            <span class="tag">XML</span>
+            <span class="tag">JWT</span>
+            <span class="tag">OAuth</span>
+            <span class="tag">Web Security</span>
+            <span class="tag">CORS</span>
+          </div>
+        </div>
+        
+      
+        
+        <div class="card skill-card">
+          <strong>Machine Learning & AI</strong>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">TensorFlow.js</span>
+            <span class="tag">Python ML</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Neural Networks</span>
+            <span class="tag">Computer Vision</span>
+            <span class="tag">NLP</span>
+          </div>
+        </div>
+        
+        
       </div>
     </section>
 
     <!-- PROJECTS -->
     <section id="projects" data-aos="fade-up">
       <h2>Projects</h2>
-      <div class="projects">
 
-        <article class="proj-card" data-aos="zoom-in">
-          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1526378722051-8f1b7b8b4ca3?q=80');background-size:cover;background-position:center"></div>
-          <div>
-            <div class="proj-title">ISL Translator — Sign Fusion</div>
-            <div class="proj-desc">Real-time ISL translator using ML + animated 3D avatar.</div>
-            <div class="proj-meta">
-              <div class="tech-tags"><span class="tag">React</span><span class="tag">Three.js</span><span class="tag">ML</span></div>
-              <div class="project-links">
-                <a class="btn-live" href="https://sign-fusion.vercel.app" target="_blank">Live</a>
-                <a class="btn-code" href="https://github.com/mdismail25/Sign-Fusion" target="_blank">Code</a>
-              </div>
-            </div>
+      <!-- Projects Grid -->
+      <div id="projectsGrid" class="projects" aria-live="polite">
+        <!-- Project cards will be rendered by JS to allow dynamic GitHub stats & lazy-loading -->
+      </div>
+
+      <!-- Pagination (non-functional placeholder if you have many projects) -->
+      <div class="pagination" style="text-align:center;margin-top:22px;display:flex;justify-content:center;gap:10px">
+        <button class="btn btn-ghost" onclick="prevPage()" aria-label="Previous page">Prev</button>
+        <button class="btn btn-primary" onclick="nextPage()" aria-label="Next page">Next</button>
+      </div>
+
+      <!-- Modal for project details -->
+      <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-panel" role="document">
+          <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+          <div id="modalBody">
+            <!-- Filled by JS -->
           </div>
-        </article>
-
-        <article class="proj-card" data-aos="zoom-in" data-aos-delay="80">
-          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80');background-size:cover;background-position:center"></div>
-          <div>
-            <div class="proj-title">LearnSign — 3D Avatar Learning</div>
-            <div class="proj-desc">3D avatar that teaches ISL alphabets & words via animations.</div>
-            <div class="proj-meta">
-              <div class="tech-tags"><span class="tag">Three.js</span><span class="tag">GLTF</span></div>
-              <div class="project-links">
-                <a class="btn-live" href="https://learnsign-demo.vercel.app" target="_blank">Live</a>
-                <a class="btn-code" href="https://github.com/Ravi8855/LearnSign-3D-Avatar" target="_blank">Code</a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="proj-card" data-aos="zoom-in" data-aos-delay="160">
-          <div class="proj-thumb" style="background:#071b24;display:flex;align-items:center;justify-content:center">Feedback</div>
-          <div>
-            <div class="proj-title">Feedback System</div>
-            <div class="proj-desc">Full-stack feedback app using React + Node + SQLite.</div>
-            <div class="proj-meta">
-              <div class="tech-tags"><span class="tag">React</span><span class="tag">Node</span></div>
-              <div class="project-links">
-                <a class="btn-code" href="https://github.com/Ravi8855/Feedback-App" target="_blank">Code</a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="proj-card" data-aos="zoom-in" data-aos-delay="240">
-          <div class="proj-thumb" style="background:#071b24;display:flex;align-items:center;justify-content:center">Unit Converter</div>
-          <div>
-            <div class="proj-title">Unit Converter — Android App</div>
-            <div class="proj-desc">Fast Android conversion app written in Java.</div>
-            <div class="proj-meta">
-              <div class="tech-tags"><span class="tag">Android</span><span class="tag">Java</span></div>
-              <div class="project-links">
-                <a class="btn-code" href="https://github.com/Ravi8855/Unit-Converter-App" target="_blank">Code</a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- GUEST HOUSE BOOKING -->
-        <article class="proj-card" data-aos="zoom-in" data-aos-delay="320">
-          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80');background-size:cover;background-position:center"></div>
-          <div>
-            <div class="proj-title">Guest House Booking System</div>
-            <div class="proj-desc">A complete room booking platform featuring availability tracking, UI enhancements, and clean modular code.</div>
-            <div class="proj-meta">
-              <div class="tech-tags"><span class="tag">React</span><span class="tag">Node</span></div>
-              <div class="project-links">
-                <a class="btn-code" href="https://github.com/Ravi8855/Guest_house_booking" target="_blank">Code</a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- FRONTEND DEVELOPER ASSIGNMENT -->
-        <article class="proj-card" data-aos="zoom-in" data-aos-delay="400">
-          <div class="proj-thumb" style="background-image:url('https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?q=80');background-size:cover;background-position:center"></div>
-          <div>
-            <div class="proj-title">Frontend Developer Assignment</div>
-            <div class="proj-desc">Responsive UI assignment showcasing component design, API handling, and clean frontend architecture.</div>
-            <div class="proj-meta">
-              <div class="tech-tags"><span class="tag">React</span><span class="tag">CSS</span></div>
-              <div class="project-links">
-                <a class="btn-code" href="https://github.com/Ravi8855/Frontend_Developer_Assignment" target="_blank">Code</a>
-              </div>
-            </div>
-          </div>
-        </article>
-
+        </div>
       </div>
     </section>
 
-    <!-- CONTACT (updated formatting only) -->
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements" data-aos="fade-up">
+      <h2>Achievements & Certifications</h2>
+      <div class="achievements">
+        <div class="ach-card">
+          <div style="font-size:1.15rem;font-weight:700">Oracle Cloud Foundations</div>
+          <div style="color:var(--muted);margin-top:8px">Cloud fundamentals & services</div>
+        </div>
+        <div class="ach-card">
+          <div style="font-size:1.15rem;font-weight:700">Infosys Generative AI</div>
+          <div style="color:var(--muted);margin-top:8px">Practical applications of GenAI</div>
+        </div>
+        <div class="ach-card">
+          <div style="font-size:1.15rem;font-weight:700">Green AI — ML & Data</div>
+          <div style="color:var(--muted);margin-top:8px">Sustainable ML practices</div>
+        </div>
+        <div class="ach-card">
+          <div style="font-size:1.15rem;font-weight:700">Software Engineering Internship</div>
+          <div style="color:var(--muted);margin-top:8px">Practical software engineering</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERNSHIP -->
+    <section id="internship" data-aos="fade-up">
+      <h2>Internship Experience</h2>
+      
+      <div style="display:grid;gap:32px;max-width:1200px;margin:auto">
+        <!-- Internship 1: TaskSphere -->
+        <div class="card" style="padding:40px;border-radius:20px;position:relative;overflow:hidden">
+          <div style="display:grid;gap:24px">
+            <div>
+              <h3 style="font-size:1.5rem;margin-bottom:12px;color:var(--text);display:flex;align-items:center;gap:12px">
+                <span style="font-size:2rem">💼</span>
+                Frontend Developer Internship
+              </h3>
+              <p style="color:var(--muted);font-size:1.05rem;line-height:1.7;margin-bottom:20px">
+                Completed a comprehensive frontend development internship where I built a full-featured task management application. 
+                This project demonstrated my ability to create modern, responsive web applications with secure authentication, 
+                real-time CRUD operations, and an intuitive user interface.
+              </p>
+            </div>
+
+            <div style="display:grid;gap:16px;margin-top:12px">
+              <div style="display:flex;align-items:start;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--accent1);font-size:1.2rem;font-weight:700">✓</span>
+                <div>
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Project: TaskSphere</strong>
+                  <p style="color:var(--muted);font-size:0.95rem;margin:0;line-height:1.6">
+                    A modern task management application with secure login, real-time CRUD operations, and a beautiful dashboard interface.
+                  </p>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:start;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--accent1);font-size:1.2rem;font-weight:700">✓</span>
+                <div>
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Key Features</strong>
+                  <ul style="color:var(--muted);font-size:0.95rem;margin:0;padding-left:20px;line-height:1.8">
+                    <li>Secure user authentication and registration</li>
+                    <li>Real-time task creation, reading, updating, and deletion</li>
+                    <li>Modern and responsive dashboard design</li>
+                    <li>Intuitive user interface with smooth interactions</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:start;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--accent1);font-size:1.2rem;font-weight:700">✓</span>
+                <div>
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Technologies Used</strong>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+                    <span class="tag">React</span>
+                    <span class="tag">Frontend Development</span>
+                    <span class="tag">UI/UX Design</span>
+                    <span class="tag">Authentication</span>
+                    <span class="tag">CRUD Operations</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+              <a href="https://frontend-developer-assignment-six.vercel.app/" target="_blank" rel="noopener noreferrer" 
+                 class="btn btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+                <span>View Live Project</span>
+                <span>→</span>
+              </a>
+              <div style="color:var(--muted);font-size:0.95rem;display:flex;align-items:center;gap:8px">
+                <span>🔗</span>
+                <span>Deployed on Vercel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Internship 2: Guest House Booking -->
+        <div class="card" style="padding:40px;border-radius:20px;position:relative;overflow:hidden">
+          <div style="display:grid;gap:24px">
+            <div>
+              <h3 style="font-size:1.5rem;margin-bottom:12px;color:var(--text);display:flex;align-items:center;gap:12px">
+                <span style="font-size:2rem">🏨</span>
+                Full Stack Developer Internship
+              </h3>
+              <p style="color:var(--muted);font-size:1.05rem;line-height:1.7;margin-bottom:20px">
+                Developed a comprehensive guest house booking system during my full stack development internship. 
+                This project showcased my skills in building end-to-end web applications with room availability tracking, 
+                booking management, and a modular, scalable architecture.
+              </p>
+            </div>
+
+            <div style="display:grid;gap:16px;margin-top:12px">
+              <div style="display:flex;align-items:start;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--accent1);font-size:1.2rem;font-weight:700">✓</span>
+                <div>
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Project: Guest House Booking System</strong>
+                  <p style="color:var(--muted);font-size:0.95rem;margin:0;line-height:1.6">
+                    A complete booking platform with room availability tracking, reservation management, and user-friendly interface for managing guest house accommodations.
+                  </p>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:start;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--accent1);font-size:1.2rem;font-weight:700">✓</span>
+                <div>
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Key Features</strong>
+                  <ul style="color:var(--muted);font-size:0.95rem;margin:0;padding-left:20px;line-height:1.8">
+                    <li>Room availability tracking and management</li>
+                    <li>Booking reservation system with date selection</li>
+                    <li>User authentication and booking history</li>
+                    <li>Modular and scalable code architecture</li>
+                    <li>Responsive design for all devices</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:start;gap:12px;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05)">
+                <span style="color:var(--accent1);font-size:1.2rem;font-weight:700">✓</span>
+                <div>
+                  <strong style="color:var(--text);display:block;margin-bottom:4px">Technologies Used</strong>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+                    <span class="tag">React</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">Full Stack</span>
+                    <span class="tag">Database</span>
+                    <span class="tag">REST APIs</span>
+                    <span class="tag">Booking System</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+              <a href="https://guest-house-booking-nine.vercel.app/" target="_blank" rel="noopener noreferrer" 
+                 class="btn btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+                <span>View Live Project</span>
+                <span>→</span>
+              </a>
+              <div style="color:var(--muted);font-size:0.95rem;display:flex;align-items:center;gap:8px">
+                <span>🔗</span>
+                <span>Deployed on Vercel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT (kept functional & formatted) -->
     <section id="contact" data-aos="fade-up">
       <h2>Contact Me</h2>
-      <div class="card" style="max-width:650px;margin:auto;padding:30px 24px;border-radius:16px;">
-        <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST" style="display:grid;gap:18px;">
+      <div class="card" style="max-width:650px;margin:auto;padding:40px 32px;border-radius:20px;">
+        <form action="https://formsubmit.co/ravichalmar@gmail.com" method="POST" style="display:grid;gap:20px;">
           <input type="hidden" name="_captcha" value="false">
 
           <input type="text" name="name" placeholder="Your Name" required
-            style="padding:14px;border-radius:10px;font-size:1rem;background:#0b1a25;border:1px solid rgba(255,255,255,0.15);color:white;">
+            style="padding:16px 20px;border-radius:12px;font-size:1rem;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.1);color:var(--text);font-family:inherit;transition:all var(--transition);"
+            onfocus="this.style.borderColor='var(--accent1)';this.style.background='rgba(255,255,255,0.05)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='rgba(255,255,255,0.03)'">
 
           <input type="email" name="email" placeholder="Your Email" required
-            style="padding:14px;border-radius:10px;font-size:1rem;background:#0b1a25;border:1px solid rgba(255,255,255,0.15);color:white;">
+            style="padding:16px 20px;border-radius:12px;font-size:1rem;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.1);color:var(--text);font-family:inherit;transition:all var(--transition);"
+            onfocus="this.style.borderColor='var(--accent1)';this.style.background='rgba(255,255,255,0.05)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='rgba(255,255,255,0.03)'">
 
-          <textarea name="message" rows="5" placeholder="Your Message" required
-            style="padding:14px;border-radius:10px;font-size:1rem;background:#0b1a25;border:1px solid rgba(255,255,255,0.15);color:white;resize:none;"></textarea>
+          <textarea name="message" rows="6" placeholder="Your Message" required
+            style="padding:16px 20px;border-radius:12px;font-size:1rem;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.1);color:var(--text);resize:vertical;font-family:inherit;transition:all var(--transition);line-height:1.6;"
+            onfocus="this.style.borderColor='var(--accent1)';this.style.background='rgba(255,255,255,0.05)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='rgba(255,255,255,0.03)'"></textarea>
 
-          <button class="submit" type="submit"
-            style="padding:14px;border-radius:12px;font-size:1.1rem;font-weight:700;background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:#001;cursor:pointer;">Send Message</button>
+          <button class="submit btn btn-primary" type="submit"
+            style="padding:16px 28px;border-radius:12px;font-size:1.05rem;font-weight:600;margin-top:8px;">Send Message</button>
         </form>
       </div>
     </section>
 
-    <footer>© 2025 Ravi • Built with care • Available for internships & roles</footer>
-
+    <footer>
+      <p style="margin-bottom:12px;font-size:1rem;color:var(--text);opacity:0.9">© 2025 Ravi</p>
+      <p style="color:var(--muted);font-size:0.9rem">Built with care • Available for internships & roles</p>
+    </footer>
   </main>
 
-  <!-- Dependencies: AOS, GSAP, Three.js -->
+  <!-- Dependencies -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js" onload="window.orbitControlsLoaded = true"></script>
 
   <script>
-    // AOS init
-    AOS.init({ duration:650, once:true, easing:'cubic-bezier(.2,.8,.2,1)' });
+    /* -------------------------
+       Projects configuration
+       -------------------------
+       Add or edit project entries here.
+       Each project may include:
+       - id: unique key (string)
+       - title, desc
+       - live (url) optional
+       - repo: "owner/repo" (for GitHub API stats)
+       - thumbnails: array of image URLs for modal carousel
+       - video: optional YouTube embed id or video URL (YouTube recommended)
+    ---------------------------*/
+    const PROJECTS = [
+      {
+        id: 'signfusion',
+        title: 'ISL Translator — Sign Fusion',
+        desc: 'Real-time ISL translator combining ML with a 3D avatar interface.',
+        live: 'https://sign-fusion.vercel.app',
+        repo: 'mdismail25/Sign-Fusion',
+        thumbnails: [
+          'https://images.unsplash.com/photo-1526378722051-8f1b7b8b4ca3?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1200&auto=format&fit=crop'
+        ],
+        video: '' // add YouTube id if available
+      },
+      {
+        id: 'learnsign',
+        title: 'LearnSign — 3D Avatar Learning',
+        desc: 'Interactive 3D avatar animating letters and words for ISL learning.',
+        live: 'https://learnsign-demo.vercel.app',
+        repo: 'Ravi8855/LearnSign-3D-Avatar',
+        thumbnails: [
+          'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop'
+        ],
+        video: ''
+      },
+     
+      {
+        id: 'unitconverter',
+        title: 'Unit Converter — Android App',
+        desc: 'Lightweight Android unit converter app.',
+        repo: 'Ravi8855/Unit-Converter-App',
+        thumbnails: [],
+        video: ''
+      },
+      {
+        id: 'guesthouse',
+        title: 'Guest House Booking System',
+        desc: 'Room booking platform with availability tracking and modular code.',
+        repo: 'Ravi8855/Guest_house_booking',
+        thumbnails: ['https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=1200&auto=format&fit=crop'],
+        video: ''
+      },
+      {
+        id: 'frontendtask',
+        title: 'Frontend Developer Assignment',
+        desc: 'UI assignment demonstrating component design & API handling.',
+        repo: 'Ravi8855/Frontend_Developer_Assignment',
+        thumbnails: ['https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?q=80&w=1200&auto=format&fit=crop'],
+        video: ''
+      }
+    ];
 
-    // Navbar active on scroll
-    const navItems = document.querySelectorAll('.nav-item');
-    const sections = ['about','skills','projects','contact'].map(id=>document.getElementById(id));
-    function onScroll(){
-      const y = window.scrollY + 120;
-      sections.forEach((sec,i)=>{
-        if(!sec) return;
-        const top = sec.offsetTop;
-        const bottom = top + sec.offsetHeight;
-        if(y>=top && y<bottom){ navItems.forEach(n=>n.classList.remove('active')); navItems[i].classList.add('active'); }
-      });
-      // navbar shrink
-      const nav = document.querySelector('nav'); if(window.scrollY>40) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+    /* -------------------------
+       Utility: create project card DOM
+    ---------------------------*/
+    function createProjectCard(p) {
+      const article = document.createElement('article');
+      article.className = 'proj-card';
+      article.tabIndex = 0;
+      article.setAttribute('data-id', p.id);
+
+      // Lazy thumbnail (data-src)
+      const thumb = document.createElement('div');
+      thumb.className = 'proj-thumb';
+      if (p.thumbnails && p.thumbnails.length) {
+        thumb.dataset.src = p.thumbnails[0];
+        thumb.style.backgroundSize = 'cover';
+        thumb.style.backgroundPosition = 'center';
+      } else {
+        thumb.textContent = p.title.split(' ')[0];
+      }
+
+      const content = document.createElement('div');
+
+      const title = document.createElement('div');
+      title.className = 'proj-title';
+      title.textContent = p.title;
+
+      const desc = document.createElement('div');
+      desc.className = 'proj-desc';
+      desc.textContent = p.desc;
+
+      const meta = document.createElement('div');
+      meta.className = 'proj-meta';
+
+      const tags = document.createElement('div');
+      tags.className = 'tech-tags';
+      // show tags from title / repo heuristics
+      const t1 = document.createElement('span'); t1.className='tag'; t1.textContent = 'Web';
+      tags.appendChild(t1);
+
+      const links = document.createElement('div');
+      links.className = 'project-links';
+      if (p.live) {
+        const aLive = document.createElement('a'); aLive.className='btn-live'; aLive.href=p.live; aLive.target='_blank'; aLive.rel='noopener noreferrer'; aLive.textContent='Live';
+        links.appendChild(aLive);
+      }
+      if (p.repo) {
+        const aCode = document.createElement('a'); aCode.className='btn-code'; aCode.href=`https://github.com/${p.repo}`; aCode.target='_blank'; aCode.rel='noopener noreferrer'; aCode.textContent='Code';
+        links.appendChild(aCode);
+      }
+
+      // github stats placeholder
+      const gh = document.createElement('div');
+      gh.className = 'gh-stats';
+      gh.innerHTML = '<span data-stars>—</span> ★ &nbsp; <span data-forks>—</span> ⎇';
+
+      meta.appendChild(tags);
+      meta.appendChild(links);
+
+      content.appendChild(title);
+      content.appendChild(desc);
+      content.appendChild(meta);
+      content.appendChild(gh);
+
+      article.appendChild(thumb);
+      article.appendChild(content);
+
+      // click opens modal
+      article.addEventListener('click', () => openModal(p.id));
+      article.addEventListener('keypress', (e) => { if (e.key === 'Enter') openModal(p.id); });
+
+      return article;
     }
-    window.addEventListener('scroll', onScroll); onScroll();
 
-    // Hamburger + mobile menu
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', ()=>{ const open = mobileMenu.style.display==='flex'; mobileMenu.style.display = open? 'none':'flex'; mobileMenu.setAttribute('aria-hidden', open); });
+    /* -------------------------
+       Render projects & lazy load thumbs
+    ---------------------------*/
+    const projectsGrid = document.getElementById('projectsGrid');
+    PROJECTS.forEach(p => {
+      const card = createProjectCard(p);
+      projectsGrid.appendChild(card);
+    });
 
-    // Theme toggle (top and mobile)
-    const themeToggle = document.getElementById('themeToggle');
-    const themeToggleTop = document.getElementById('themeToggleTop');
-    function toggleTheme(){ document.body.classList.toggle('light'); }
-    if(themeToggle) themeToggle.addEventListener('click', toggleTheme);
-    if(themeToggleTop) themeToggleTop.addEventListener('click', toggleTheme);
+    // IntersectionObserver for lazy thumbnails
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const thumb = entry.target.querySelector('.proj-thumb');
+          if (thumb && thumb.dataset.src) {
+            thumb.style.backgroundImage = `url('${thumb.dataset.src}')`;
+            thumb.removeAttribute('data-src');
+          }
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '200px' });
 
-    // GSAP entrance
+    document.querySelectorAll('.proj-card').forEach(card => io.observe(card));
+
+    /* -------------------------
+       GitHub API stats fetch (public rate-limited)
+       Fetches: stargazers_count, forks_count, open_issues_count, updated_at
+    ---------------------------*/
+    async function fetchRepoStats(repo) {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}`);
+        if (!res.ok) throw new Error('GitHub API error');
+        return await res.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function populateGitStats() {
+      const cards = document.querySelectorAll('.proj-card');
+      for (const card of cards) {
+        const repoLink = card.querySelector('.btn-code');
+        const ghStats = card.querySelector('.gh-stats');
+        if (!repoLink || !ghStats) continue;
+        const href = repoLink.href;
+        // parse owner/repo
+        const m = href.match(/github\.com\/([^/]+\/[^/]+)/i);
+        if (!m) continue;
+        const repo = m[1];
+        const data = await fetchRepoStats(repo);
+        if (!data) { ghStats.innerHTML = '<span>—</span> ★'; continue; }
+        const stars = data.stargazers_count || 0;
+        const forks = data.forks_count || 0;
+        const issues = data.open_issues_count || 0;
+        const updated = data.updated_at ? new Date(data.updated_at).toLocaleDateString() : '';
+        ghStats.innerHTML = `<span title="Stars">${stars}</span> ★ &nbsp; <span title="Forks">${forks}</span> ⎇ &nbsp; <small style="color:var(--muted);margin-left:8px">${updated}</small>`;
+      }
+    }
+
+    // Kick off stats fetching (non-blocking)
+    populateGitStats();
+
+    /* -------------------------
+       Modal functionality (carousel, video)
+    ---------------------------*/
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+
+    function openModal(id) {
+      const p = PROJECTS.find(x => x.id === id);
+      if (!p) return;
+      document.body.style.overflow = 'hidden';
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+
+      // build modal content
+      modalBody.innerHTML = ''; // clear
+      const title = document.createElement('h3'); title.textContent = p.title; title.style.marginTop='0';
+      const desc = document.createElement('p'); desc.textContent = p.desc; desc.style.color='var(--muted)';
+
+      // carousel container
+      const carousel = document.createElement('div'); carousel.className='modal-carousel';
+      const thumbs = p.thumbnails && p.thumbnails.length ? p.thumbnails : [];
+      let idx = 0;
+
+      const thumbPanel = document.createElement('div'); thumbPanel.className = 'modal-thumb';
+      if (thumbs.length) thumbPanel.style.backgroundImage = `url('${thumbs[0]}')`, thumbPanel.style.backgroundSize='cover', thumbPanel.style.backgroundPosition='center';
+      else thumbPanel.textContent = p.title;
+
+      carousel.appendChild(thumbPanel);
+
+      // video embed if present
+      let videoEl = null;
+      if (p.video) {
+        // support youtube id or full url
+        let vidUrl = p.video;
+        // If YouTube ID provided, build embed
+        if (!vidUrl.includes('youtube') && vidUrl.length < 40) vidUrl = `https://www.youtube.com/embed/${vidUrl}`;
+        // add iframe below carousel
+        videoEl = document.createElement('div');
+        videoEl.style.marginTop = '12px';
+        videoEl.innerHTML = `<iframe width="100%" height="360" src="${vidUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      }
+
+      // left/right controls if more thumbs
+      const controls = document.createElement('div'); controls.className='carousel-controls';
+      const prevBtn = document.createElement('button'); prevBtn.className='carousel-btn'; prevBtn.textContent='Prev';
+      const nextBtn = document.createElement('button'); nextBtn.className='carousel-btn'; nextBtn.textContent='Next';
+
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!thumbs.length) return;
+        idx = (idx - 1 + thumbs.length) % thumbs.length;
+        thumbPanel.style.backgroundImage = `url('${thumbs[idx]}')`;
+      });
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!thumbs.length) return;
+        idx = (idx + 1) % thumbs.length;
+        thumbPanel.style.backgroundImage = `url('${thumbs[idx]}')`;
+      });
+
+      // repo / live / stats area
+      const linkRow = document.createElement('div'); linkRow.style.display='flex'; linkRow.style.gap='10px'; linkRow.style.alignItems='center'; linkRow.style.marginTop='12px';
+      if (p.live) {
+        const aLive = document.createElement('a'); aLive.href = p.live; aLive.target='_blank'; aLive.rel='noopener noreferrer'; aLive.className='btn-live'; aLive.textContent='Open Live';
+        linkRow.appendChild(aLive);
+      }
+      if (p.repo) {
+        const aRepo = document.createElement('a'); aRepo.href = `https://github.com/${p.repo}`; aRepo.target='_blank'; aRepo.rel='noopener noreferrer'; aRepo.className='btn-code'; aRepo.textContent='View Code';
+        linkRow.appendChild(aRepo);
+      }
+
+      const statsHolder = document.createElement('div'); statsHolder.style.marginLeft='auto'; statsHolder.style.color='var(--muted)'; statsHolder.textContent='Loading stats...';
+
+      // attempt to fetch GitHub stats for this repo too
+      if (p.repo) {
+        fetch(`https://api.github.com/repos/${p.repo}`).then(r => r.ok ? r.json() : null).then(data => {
+          if (!data) { statsHolder.textContent='Stats unavailable'; return; }
+          statsHolder.innerHTML = `★ ${data.stargazers_count || 0} &nbsp; ⎇ ${data.forks_count || 0} &nbsp; ${new Date(data.updated_at).toLocaleDateString()}`;
+        }).catch(()=> statsHolder.textContent='Stats error');
+      } else statsHolder.textContent='';
+
+      linkRow.appendChild(statsHolder);
+
+      controls.appendChild(prevBtn); controls.appendChild(nextBtn);
+
+      modalBody.appendChild(title);
+      modalBody.appendChild(desc);
+      modalBody.appendChild(carousel);
+      if (thumbs.length) modalBody.appendChild(controls);
+      if (videoEl) modalBody.appendChild(videoEl);
+      modalBody.appendChild(linkRow);
+
+      // keyboard: left/right
+      function onKey(e) {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+        if (e.key === 'ArrowRight') nextBtn.click();
+      }
+      document.addEventListener('keydown', onKey);
+
+      // cleanup on close hook
+      modal.dataset.onKey = onKey;
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      // remove key listener
+      const onKey = modal.dataset.onKey;
+      if (onKey) {
+        document.removeEventListener('keydown', onKey);
+        delete modal.dataset.onKey;
+      }
+    }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    /* -------------------------
+       Theme toggle + mobile menu + nav highlight + GSAP + AOS + Three.js
+    ---------------------------*/
+    AOS.init({ duration:650, once:true, easing:'cubic-bezier(.2,.8,.2,1)' });
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('h1',{y:18,opacity:0,duration:0.8,ease:'power3.out'});
     gsap.from('.lead',{y:12,opacity:0,duration:0.8,delay:0.12});
 
-    // Three.js simple interactive cube in heroCanvas
-    (function(){
-      const canvasWrap = document.getElementById('heroCanvas');
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, canvasWrap.clientWidth / canvasWrap.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-      renderer.setSize(canvasWrap.clientWidth, canvasWrap.clientHeight); renderer.setPixelRatio(window.devicePixelRatio);
-      canvasWrap.appendChild(renderer.domElement);
+    // Navbar active section and page title
+    const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+    const sections = ['about','skills','projects','achievements','internship','contact'].map(id => document.getElementById(id));
+    const sectionNames = ['About', 'Skills', 'Projects', 'Achievements', 'Internship', 'Contact'];
+    const pageTitle = document.getElementById('pageTitle');
+    const currentPageName = document.getElementById('currentPageName');
+    
+    function onScroll(){
+      const y = window.scrollY + 120;
+      let activeSectionIndex = -1;
+      
+      sections.forEach((sec, i) => {
+        if(!sec) return;
+        const top = sec.offsetTop;
+        const bottom = top + sec.offsetHeight;
+        if(y >= top && y < bottom) {
+          navLinks.forEach(l=>l.classList.remove('active'));
+          if(navLinks[i]) navLinks[i].classList.add('active');
+          activeSectionIndex = i;
+        }
+      });
+      
+      // Update page title
+      if(activeSectionIndex >= 0 && window.scrollY > 100) {
+        currentPageName.textContent = sectionNames[activeSectionIndex];
+        pageTitle.classList.add('visible');
+      } else if(window.scrollY < 100) {
+        currentPageName.textContent = 'Home';
+        pageTitle.classList.remove('visible');
+      } else if(activeSectionIndex < 0 && window.scrollY > 100) {
+        pageTitle.classList.add('visible');
+      }
+      
+      const nav = document.getElementById('mainNav') || document.querySelector('nav');
+      if(window.scrollY > 48) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+    }
+    window.addEventListener('scroll', onScroll);
+    onScroll();
 
-      const light = new THREE.DirectionalLight(0xffffff,1); light.position.set(5,10,7); scene.add(light);
-      const amb = new THREE.AmbientLight(0xffffff,0.25); scene.add(amb);
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.style.display === 'flex';
+      mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      hamburger.setAttribute('aria-expanded', String(!isOpen));
+      mobileMenu.setAttribute('aria-hidden', String(isOpen));
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>{ mobileMenu.style.display='none'; hamburger.setAttribute('aria-expanded','false'); }));
 
-      const geometry = new THREE.BoxGeometry(1.8,1.2,0.4);
-      const material = new THREE.MeshStandardMaterial({color:0x00eaff, metalness:0.2, roughness:0.3, emissive:0x003744, emissiveIntensity:0.2});
-      const cube = new THREE.Mesh(geometry, material); scene.add(cube);
+    // Theme toggles
+    const themeToggleTop = document.getElementById('themeToggleTop');
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
+    function toggleTheme(){ document.body.classList.toggle('light'); localStorage.setItem('ravi_theme', document.body.classList.contains('light') ? 'light' : 'dark'); }
+    if(themeToggleTop) themeToggleTop.addEventListener('click', toggleTheme);
+    if(themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+    // restore theme
+    if(localStorage.getItem('ravi_theme') === 'light') document.body.classList.add('light');
 
-      camera.position.z = 4;
-      // OrbitControls
-      const controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true; controls.enablePan = false; controls.minDistance = 2.2; controls.maxDistance = 8; controls.autoRotate = true; controls.autoRotateSpeed = 0.6;
+    // GSAP project entry
+    gsap.utils.toArray('.proj-card').forEach((card,i) => {
+      gsap.from(card, { y:20, opacity:0, duration:0.6, delay:0.1 + i*0.05, scrollTrigger:{trigger:card, start:'top 90%'} });
+    });
 
-      function onResize(){ renderer.setSize(canvasWrap.clientWidth, canvasWrap.clientHeight); camera.aspect = canvasWrap.clientWidth / canvasWrap.clientHeight; camera.updateProjectionMatrix(); }
-      window.addEventListener('resize', onResize);
+    // Animate section headings
+    const sectionHeadings = gsap.utils.toArray('section h2');
+    sectionHeadings.forEach((heading) => {
+      gsap.to(heading, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      });
+    });
 
-      function animate(){ requestAnimationFrame(animate); cube.rotation.y += 0.004; controls.update(); renderer.render(scene,camera);} animate();
-    })();
+    // Skills section animation - Slide in from sides with wave effect
+    const skillCards = gsap.utils.toArray('.skill-card');
+    if(skillCards.length > 0) {
+      const skillsSection = document.getElementById('skills');
+      if(skillsSection) {
+        // Wave entrance animation - cards slide in from alternating sides
+        skillCards.forEach((card, i) => {
+          const isEven = i % 2 === 0;
+          const delay = i * 0.15;
+          
+          gsap.fromTo(card, 
+            {
+              opacity: 0,
+              x: isEven ? -150 : 150,
+              y: 0,
+              rotationY: isEven ? -25 : 25,
+              filter: 'blur(8px)',
+              scale: 0.8
+            },
+            {
+              opacity: 1,
+              x: 0,
+              y: 0,
+              rotationY: 0,
+              filter: 'blur(0px)',
+              scale: 1,
+              duration: 1.0,
+              delay: delay,
+              ease: "elastic.out(1, 0.75)",
+              scrollTrigger: {
+                trigger: skillsSection,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+                once: true
+              }
+            }
+          );
+          
+          // Add wave bounce effect after entrance
+          gsap.to(card, {
+            y: -10,
+            duration: 0.6,
+            delay: delay + 0.5,
+            yoyo: true,
+            repeat: 1,
+            ease: "sine.inOut",
+            scrollTrigger: {
+              trigger: skillsSection,
+              start: 'top 80%',
+              once: true
+            }
+          });
+        });
+        
+        // Enhanced hover animations with spring effect
+        skillCards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+              x: 0,
+              y: -8,
+              rotationY: 0,
+              scale: 1.03,
+              filter: 'blur(0px)',
+              duration: 0.5,
+              ease: "back.out(2)"
+            });
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              x: 0,
+              y: 0,
+              rotationY: 0,
+              scale: 1,
+              duration: 0.4,
+              ease: "power2.in"
+            });
+          });
+        });
+        
+        // Animate tags with pop-in effect
+        skillCards.forEach((card, cardIndex) => {
+          const tags = card.querySelectorAll('.tag');
+          tags.forEach((tag, tagIndex) => {
+            gsap.from(tag, {
+              opacity: 0,
+              scale: 0,
+              rotation: -180,
+              duration: 0.6,
+              delay: 0.8 + cardIndex * 0.15 + tagIndex * 0.08,
+              ease: "back.out(2)",
+              scrollTrigger: {
+                trigger: skillsSection,
+                start: 'top 80%',
+                once: true
+              }
+            });
+          });
+        });
+      }
+    }
 
-    // Ensure project links open and no blocked overlays
-    document.querySelectorAll('.project-links a').forEach(a=>{ a.setAttribute('rel','noopener noreferrer'); a.addEventListener('click', ()=>{}); });
+    // Achievements section animation - Zoom and spin entrance with blur
+    const achCards = gsap.utils.toArray('.ach-card');
+    if(achCards.length > 0) {
+      const achievementsSection = document.getElementById('achievements');
+      if(achievementsSection) {
+        // Zoom and spin entrance animation from center outward
+        achCards.forEach((card, i) => {
+          const delay = i * 0.2;
+          const angle = (i * 360) / achCards.length;
+          
+          gsap.fromTo(card,
+            {
+              opacity: 0,
+              scale: 0.2,
+              rotationZ: angle + 180,
+              filter: 'blur(15px)',
+              x: Math.cos(angle * Math.PI / 180) * 200,
+              y: Math.sin(angle * Math.PI / 180) * 200
+            },
+            {
+              opacity: 1,
+              scale: 1,
+              rotationZ: 0,
+              filter: 'blur(0px)',
+              x: 0,
+              y: 0,
+              duration: 1.2,
+              delay: delay,
+              ease: "back.out(2)",
+              scrollTrigger: {
+                trigger: achievementsSection,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+                once: true
+              }
+            }
+          );
+          
+          // Add pulse effect after entrance
+          gsap.to(card, {
+            scale: 1.05,
+            duration: 0.4,
+            delay: delay + 0.8,
+            yoyo: true,
+            repeat: 1,
+            ease: "power2.inOut",
+            scrollTrigger: {
+              trigger: achievementsSection,
+              start: 'top 80%',
+              once: true
+            }
+          });
+        });
+        
+        // Animate text content with delay
+        achCards.forEach((card, i) => {
+          const title = card.querySelector('div:first-child');
+          const desc = card.querySelector('div:last-child');
+          const delay = i * 0.2 + 0.3;
+          
+          if(title) {
+            gsap.from(title, {
+              opacity: 0,
+              scale: 0.5,
+              rotation: -10,
+              duration: 0.8,
+              delay: delay,
+              ease: "back.out(2)",
+              scrollTrigger: {
+                trigger: achievementsSection,
+                start: 'top 80%',
+                once: true
+              }
+            });
+          }
+          
+          if(desc) {
+            gsap.from(desc, {
+              opacity: 0,
+              y: 30,
+              duration: 0.8,
+              delay: delay + 0.2,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: achievementsSection,
+                start: 'top 80%',
+                once: true
+              }
+            });
+          }
+        });
+        
+        // Enhanced hover animations with zoom and glow
+        achCards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+              scale: 1.08,
+              rotationZ: 2,
+              duration: 0.6,
+              ease: "back.out(2)"
+            });
+            
+            const title = card.querySelector('div:first-child');
+            const desc = card.querySelector('div:last-child');
+            
+            if(title) {
+              gsap.to(title, {
+                scale: 1.1,
+                rotationZ: 2,
+                duration: 0.4,
+                ease: "back.out(2)"
+              });
+            }
+            
+            if(desc) {
+              gsap.to(desc, {
+                scale: 1.05,
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            }
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              scale: 1,
+              rotationZ: 0,
+              duration: 0.5,
+              ease: "power2.in"
+            });
+            
+            const title = card.querySelector('div:first-child');
+            const desc = card.querySelector('div:last-child');
+            
+            if(title) {
+              gsap.to(title, {
+                scale: 1,
+                rotationZ: 0,
+                duration: 0.4,
+                ease: "power2.in"
+              });
+            }
+            
+            if(desc) {
+              gsap.to(desc, {
+                scale: 1,
+                duration: 0.4,
+                ease: "power2.in"
+              });
+            }
+          });
+        });
+      }
+    }
+
+    // Three.js cube in hero - Wait for DOM and OrbitControls to be ready
+    function initThreeJS() {
+      const wrap = document.getElementById('heroCanvas');
+      if(!wrap) {
+        setTimeout(initThreeJS, 100);
+        return;
+      }
+      
+      // Wait for THREE.js and OrbitControls to be available
+      if(typeof THREE === 'undefined') {
+        setTimeout(initThreeJS, 100);
+        return;
+      }
+      
+      // Check if OrbitControls is loaded (it might be THREE.OrbitControls or global OrbitControls)
+      const hasOrbitControls = (THREE.OrbitControls || typeof OrbitControls !== 'undefined' || window.orbitControlsLoaded);
+      if(!hasOrbitControls) {
+        setTimeout(initThreeJS, 100);
+        return;
+      }
+
+      try {
+        const scene = new THREE.Scene();
+        const width = wrap.clientWidth || 400;
+        const height = wrap.clientHeight || 360;
+        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0);
+        wrap.innerHTML = '';
+        wrap.appendChild(renderer.domElement);
+
+        // Lighting
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+        const amb = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(amb);
+        const pointLight = new THREE.PointLight(0x00eaff, 0.5);
+        pointLight.position.set(-5, 5, 5);
+        scene.add(pointLight);
+
+        // Geometry and material
+        const geom = new THREE.BoxGeometry(1.8, 1.2, 0.4);
+        const mat = new THREE.MeshStandardMaterial({ 
+          color: 0x00eaff, 
+          metalness: 0.3, 
+          roughness: 0.4, 
+          emissive: 0x002b33, 
+          emissiveIntensity: 0.2 
+        });
+        const mesh = new THREE.Mesh(geom, mat);
+        scene.add(mesh);
+
+        camera.position.z = 4.2;
+        
+        // Initialize OrbitControls - try different ways it might be available
+        let OrbitControlsClass;
+        let controls = null;
+        
+        if(typeof THREE !== 'undefined' && THREE.OrbitControls) {
+          OrbitControlsClass = THREE.OrbitControls;
+        } else if(typeof OrbitControls !== 'undefined') {
+          OrbitControlsClass = OrbitControls;
+        } else {
+          // Fallback: create simple manual controls if OrbitControls fails
+          console.warn('OrbitControls not found, using fallback rotation');
+          let mouseX = 0, mouseY = 0;
+          let isMouseDown = false;
+          
+          wrap.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+          
+          wrap.addEventListener('mousemove', (e) => {
+            if(isMouseDown) {
+              const deltaX = e.clientX - mouseX;
+              const deltaY = e.clientY - mouseY;
+              mesh.rotation.y += deltaX * 0.01;
+              mesh.rotation.x += deltaY * 0.01;
+              mouseX = e.clientX;
+              mouseY = e.clientY;
+            }
+          });
+          
+          wrap.addEventListener('mouseup', () => { isMouseDown = false; });
+          wrap.addEventListener('mouseleave', () => { isMouseDown = false; });
+        }
+        
+        if(OrbitControlsClass) {
+          controls = new OrbitControlsClass(camera, renderer.domElement);
+        }
+        if(controls) {
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.05;
+          controls.enablePan = false;
+          controls.autoRotate = true;
+          controls.autoRotateSpeed = 0.5;
+          controls.minDistance = 2.4;
+          controls.maxDistance = 8;
+          controls.enableZoom = true;
+        }
+
+        // Handle resize
+        function onResize() {
+          const newWidth = wrap.clientWidth || 400;
+          const newHeight = wrap.clientHeight || 360;
+          renderer.setSize(newWidth, newHeight);
+          camera.aspect = newWidth / newHeight;
+          camera.updateProjectionMatrix();
+        }
+        window.addEventListener('resize', onResize);
+        
+        // Initial resize
+        onResize();
+
+        // Animation loop
+        function animate() {
+          requestAnimationFrame(animate);
+          if(!controls || !controls.enabled) {
+            mesh.rotation.y += 0.005;
+          } else {
+            controls.update();
+          }
+          renderer.render(scene, camera);
+        }
+        animate();
+      } catch(error) {
+        console.error('Three.js initialization error:', error);
+        wrap.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);">3D Demo Loading...</div>';
+      }
+    }
+    
+    // Start initialization when DOM is ready
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initThreeJS);
+    } else {
+      setTimeout(initThreeJS, 200);
+    }
+
+    // Accessibility: show keyboard focus styles on Tab
+    document.addEventListener('keyup', (e) => { if (e.key === 'Tab') document.documentElement.classList.add('show-focus'); });
+
+    // Keyboard: Esc closes modal
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Pagination placeholders
+    function nextPage(){ alert('Pagination placeholder — all projects currently shown.'); }
+    function prevPage(){ alert('Pagination placeholder — all projects currently shown.'); }
+
+    // fetch initial GitHub stats at grid level (non-blocking)
+    populateGitStats();
 
   </script>
 </body>
 </html>
+
 
 
 
