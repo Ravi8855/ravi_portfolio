@@ -193,6 +193,7 @@
     setCerts([
       {id:uid(), title:'Oracle Cloud Foundations', issuer:'Oracle', src:''},
       {id:uid(), title:'Infosys Generative AI', issuer:'Infosys', src:''},
+      {id:uid(), title:'Infosys Generative AI', issuer:'Infosys', src:'prompt infosys_page-0001.jpg'},
     ]);
   }
 
