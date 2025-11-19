@@ -631,20 +631,15 @@
       </div>
     </section>
 
-    <!-- ACHIEVEMENTS -->
-    <section id="achievements" data-aos="fade-up">
-<<<<<<< HEAD
-       <h2>Achievements & Certifications</h2>
-      <!-- <div class="achievements">
-=======
+        <!-- ACHIEVEMENTS -->
+        <section id="achievements" data-aos="fade-up">
       <h2>Achievements & Certifications</h2>
-      <div class="achievements">
->>>>>>> 13a1f355563fa8b152d5ff90d1817e877a6c296c
+      <!-- <div class="achievements">
         <div class="ach-card" data-certificate="orcle.pdf">
           <div style="font-size:1.15rem;font-weight:700">Oracle Cloud Foundations</div>
           <div style="color:var(--muted);margin-top:8px">Cloud fundamentals & services</div>
         </div>
-        <div class="ach-card" data-certificate="Generative AI_infosys.pdf">
+        <div class="ach-card" data-certificate="https://github.com/Ravi8855/ravi_portfolio/blob/main/Generative%20AI_infosys.pdf">
           <div style="font-size:1.15rem;font-weight:700">Infosys Generative AI</div>
           <div style="color:var(--muted);margin-top:8px">Practical applications of GenAI</div>
         </div>
@@ -656,9 +651,8 @@
           <div style="font-size:1.15rem;font-weight:700">Software Engineering Internship</div>
           <div style="color:var(--muted);margin-top:8px">Practical software engineering</div>
         </div>
-<<<<<<< HEAD
-      </div> --> -->
-    
+  </div> -->
+
 <!-- BEGIN: Certificate Viewer (added by assistant) -->
 <style>
   /* Certificate viewer styles */
@@ -680,10 +674,6 @@
 </style>
 
 
-<div style="margin-top:14px;">
-  <button id="addCertBtn" class="cert-btn edit">+ Add Certificate</button>
-  <input type="file" id="certFileInput" accept="*/*" style="display:none;">
-</div>
 
 <div id="certSection" style="margin-top:18px">
   <h3 style="margin:0 0 8px">Certificates</h3>
@@ -932,10 +922,6 @@
 </script>
 <!-- END: Certificate Viewer -->
 </section>
-=======
-      </div>
-    </section>
->>>>>>> 13a1f355563fa8b152d5ff90d1817e877a6c296c
 
     <!-- INTERNSHIP -->
     <section id="internship" data-aos="fade-up">
@@ -1241,12 +1227,21 @@
     certModal.addEventListener('click', (e) => { if (e.target === certModal) closeCertificateModal(); });
     document.addEventListener('keydown', (e) => { if (certModal.style.display === 'flex' && e.key === 'Escape') closeCertificateModal(); });
 
-    // Make achievement cards clickable
+    // Make achievement cards clickable — open HTTP(S) links directly, local files in modal
     document.querySelectorAll('.ach-card[data-certificate]').forEach(card => {
       card.style.cursor = 'pointer';
       card.setAttribute('tabindex', '0');
-      card.addEventListener('click', () => openCertificateModal(card.getAttribute('data-certificate')));
-      card.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') openCertificateModal(card.getAttribute('data-certificate')); });
+      function handleOpen() {
+        const src = card.getAttribute('data-certificate');
+        if (!src) return;
+        if (/^https?:\/\//i.test(src)) {
+          window.open(src, '_blank', 'noopener');
+        } else {
+          openCertificateModal(src);
+        }
+      }
+      card.addEventListener('click', handleOpen);
+      card.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(); });
     });
   </script>
 
