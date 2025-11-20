@@ -189,13 +189,18 @@
 
   window.addCertificate = addCertificate;
 
-  if(!getCerts().length){
-    setCerts([
-      {id:uid(), title:'Oracle Cloud Foundations', issuer:'Oracle', src:'prompt oracle_page-0001.jpg'},
-      {id:uid(), title:'Infosys Generative AI', issuer:'Infosys', src:'prompt infosys_page-0001.jpg'},
-      {id:uid(), title:'Infosys Generative AI', issuer:'Infosys', src:'prompt infosys_page-0001.jpg'},
-    ]);
-  }
+ if (!getCerts().length) {
+  setCerts([
+    { id: uid(), title: "Microsoft – Generative AI for Data Science", issuer: "Microsoft", src: "data science microsoft.jpg" },
+    { id: uid(), title: "Infosys – Generative AI Foundations", issuer: "Infosys", src: "Generative AI_infosys.jpg" },
+    { id: uid(), title: "HP Power Lab 2.0 – Participation", issuer: "HPCL", src: "hp 2.0.jpg" },
+    { id: uid(), title: "Cisco – JavaScript Essentials 1", issuer: "Cisco", src: "JavaScriptEssentials1Update20250907-29-pwoi72_page-0001.jpg" },
+    { id: uid(), title: "Oracle Cloud Foundations Associate", issuer: "Oracle", src: "orcle_page-0001.jpg" },
+    { id: uid(), title: "Infosys – Prompt Engineering", issuer: "Infosys", src: "prompt infosys_page-0001.jpg" },
+    { id: uid(), title: "Edunet – Green Skills & AI", issuer: "Edunet Foundation", src: "Ravi S_Completion_page-0001.jpg" }
+  ]);
+}
+
 
   render();
 })();
