@@ -12,17 +12,19 @@ const app = express();
 
 // CORS CONFIG (your working setup)
 // CORS CONFIG (allow localhost + Vercel)
+a// CORS CONFIG — allow localhost + Vercel
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://raviportfolio-two.vercel.app",
+      "https://raviportfolio-two.vercel.app"
     ],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   })
 );
+
+
 
 
 app.use(express.json());
