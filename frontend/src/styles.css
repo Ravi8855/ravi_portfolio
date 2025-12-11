@@ -563,7 +563,7 @@ body {
 
 /* Toast Fade Animation */
 .react-hot-toast {
-  animation: toastFade 0.35s ease-out;cd C:\Users\Admin\Downloads\ravi_portfolio2_serverified_fixed
+  animation: toastFade 0.35s ease-out;
 }
 
 @keyframes toastFade {
