@@ -18,13 +18,11 @@ const app = express();
  * Must be BEFORE ANY other middleware, routes, parsers.
  *****************************************************************************************/
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+  if (req.method === "OPTIONS") return res.sendStatus(200);
 
   next();
 });
@@ -34,7 +32,7 @@ app.use((req, res, next) => {
 // JSON Body Parser
 app.use(express.json());
 
-// Serve static files (uploads)
+// Serve static files
 app.use("/uploads", express.static("uploads"));
 
 
@@ -48,12 +46,6 @@ mongoose
 
 
 // ---------------------------------------------------------------------------------------
-// JWT SECRET
-// ---------------------------------------------------------------------------------------
-const JWT_SECRET = process.env.JWT_SECRET || "super_secret_fallback";
-
-
-// ---------------------------------------------------------------------------------------
 // CLOUDINARY CONFIG
 // ---------------------------------------------------------------------------------------
 cloudinary.config({
@@ -63,6 +55,22 @@ cloudinary.config({
 });
 
 const upload = multer({ storage: multer.memoryStorage() });
+
+
+// ---------------------------------------------------------------------------------------
+// TEST ROUTE (IMPORTANT FOR DEBUGGING)
+// ---------------------------------------------------------------------------------------
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working!" });
+});
+
+
+// ---------------------------------------------------------------------------------------
+// DEFAULT ROUTE
+// ---------------------------------------------------------------------------------------
+app.get("/", (req, res) => {
+  res.send("Ravi Portfolio Backend is running.");
+});
 
 
 // ---------------------------------------------------------------------------------------
@@ -90,7 +98,7 @@ app.post("/api/upload", verifyToken, upload.single("file"), async (req, res) => 
 
 
 // ---------------------------------------------------------------------------------------
-// ROUTES — MUST COME AFTER CORS + JSON PARSER
+// MAIN ROUTES
 // ---------------------------------------------------------------------------------------
 app.use("/api", projectRoutes(verifyToken));
 app.use("/api", messageRoutes(verifyToken));
@@ -103,4 +111,5 @@ app.use("/api", certificateRoutes(verifyToken));
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
+  console.log(`Open locally at: http://localhost:${PORT}`);
 });

@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Your other CSS below */
-
-
+/* Your other CSS below */
 
 /* -------------------------------------------- */
 /* Tailwind base                                */
@@ -446,7 +445,6 @@ html.dark {
 
 
 /* Your existing imports */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* --------------------------------------
    GLOBAL FONT SIZE SYSTEM (ADD THIS)
