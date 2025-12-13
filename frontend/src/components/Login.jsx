@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";   // <-- FIXED
+import toast, { Toaster } from "react-hot-toast";
 import API from "../api";
 
 export default function Login() {
@@ -55,7 +55,7 @@ export default function Login() {
       setSuccessAnim(true);
 
       setTimeout(() => {
-        window.location.href = "/admin";
+        window.location.href = "/admin/dashboard"; // ✅ FIXED
       }, 600);
 
     } catch (err) {
@@ -73,44 +73,37 @@ export default function Login() {
   return (
     <div className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-[#0f0f14]">
 
-      {/* Toast Handler */}
       <Toaster
-  position="top-center"
-  gutter={12}
-  toastOptions={{
-    duration: 2500,
-    style: {
-      padding: "14px 22px",
-      borderRadius: "18px",
-      background: "rgba(255, 255, 255, 0.08)",
-      color: "white",
-      backdropFilter: "blur(20px)",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      boxShadow: "0 0 25px rgba(255,255,255,0.15)",
-      fontSize: "16px",
-      fontWeight: "500",
-    },
+        position="top-center"
+        gutter={12}
+        toastOptions={{
+          duration: 2500,
+          style: {
+            padding: "14px 22px",
+            borderRadius: "18px",
+            background: "rgba(255, 255, 255, 0.08)",
+            color: "white",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            boxShadow: "0 0 25px rgba(255,255,255,0.15)",
+            fontSize: "16px",
+            fontWeight: "500",
+          },
+          success: {
+            style: {
+              border: "1px solid rgba(0,255,120,0.45)",
+              boxShadow: "0 0 30px rgba(0,255,120,0.35)",
+            },
+          },
+          error: {
+            style: {
+              border: "1px solid rgba(255,60,60,0.45)",
+              boxShadow: "0 0 30px rgba(255,60,60,0.35)",
+            },
+          },
+        }}
+      />
 
-    // SUCCESS TOAST STYLE
-    success: {
-      style: {
-        border: "1px solid rgba(0,255,120,0.45)",
-        boxShadow: "0 0 30px rgba(0,255,120,0.35)",
-      },
-    },
-
-    // ERROR TOAST STYLE
-    error: {
-      style: {
-        border: "1px solid rgba(255,60,60,0.45)",
-        boxShadow: "0 0 30px rgba(255,60,60,0.35)",
-      },
-    },
-  }}
-/>
-
-
-      {/* Floating Spheres */}
       <div className={`absolute inset-0 overflow-hidden ${theme}`}>
         <span className="sphere sphere1"></span>
         <span className="sphere sphere2"></span>
@@ -119,21 +112,16 @@ export default function Login() {
         <span className="sphere sphere5"></span>
       </div>
 
-      {/* Login Card */}
       <div
         className={`relative z-10 w-[420px] p-10 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20
         shadow-[0_0_80px_rgba(255,255,255,0.15)] transition duration-300
-        ${errorAnim ? "shake" : ""} ${successAnim ? "glow" : ""}
-        `}
+        ${errorAnim ? "shake" : ""} ${successAnim ? "glow" : ""}`}
       >
-
         <h2 className="text-3xl font-semibold text-center text-white mb-8">
           Admin Login
         </h2>
 
         <form className="space-y-6" onSubmit={handleLogin}>
-          
-          {/* Username */}
           <input
             type="text"
             placeholder="Username"
@@ -143,7 +131,6 @@ export default function Login() {
             onChange={(e) => setUsername(e.target.value)}
           />
 
-          {/* Password */}
           <div className="relative">
             <input
               type={showPass ? "text" : "password"}
@@ -162,15 +149,10 @@ export default function Login() {
             </span>
           </div>
 
-          {/* Captcha */}
           <div className="space-y-2">
             <div className="flex justify-between items-center bg-white/20 px-4 py-3 rounded-xl text-white font-bold tracking-widest">
               {captchaValue}
-              <button
-                type="button"
-                onClick={generateCaptcha}
-                className="text-yellow-300"
-              >
+              <button type="button" onClick={generateCaptcha} className="text-yellow-300">
                 ↻
               </button>
             </div>
@@ -185,7 +167,6 @@ export default function Login() {
             />
           </div>
 
-          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
@@ -194,7 +175,6 @@ export default function Login() {
           >
             {loading ? "Loading..." : "Login"}
           </button>
-
         </form>
       </div>
     </div>
