@@ -1,4 +1,3 @@
-// backend/routes/project.routes.js
 const express = require("express");
 const Project = require("../models/Project");
 const upload = require("../middleware/multer");
@@ -7,8 +6,7 @@ const cloudinary = require("../cloudinary");
 module.exports = function (verifyToken) {
   const router = express.Router();
 
-  // ---------------- PUBLIC ----------------
-  // GET /api/projects
+  // ✅ PUBLIC PROJECTS
   router.get("/", async (req, res) => {
     try {
       const projects = await Project.find().sort({ createdAt: -1 });
@@ -18,8 +16,7 @@ module.exports = function (verifyToken) {
     }
   });
 
-  // ---------------- CREATE (ADMIN) ----------------
-  // POST /api/projects
+  // ✅ CREATE PROJECT (ADMIN)
   router.post(
     "/",
     verifyToken,
@@ -29,20 +26,23 @@ module.exports = function (verifyToken) {
         let imageUrl = "";
 
         if (req.file) {
-          cloudinary.uploader.upload_stream(
+          const stream = cloudinary.uploader.upload_stream(
             { folder: "projects" },
             async (error, result) => {
-              if (error) return res.status(500).json({ error: "Upload failed" });
+              if (error) throw error;
+
+              imageUrl = result.secure_url;
 
               const project = new Project({
                 ...req.body,
-                image: result.secure_url,
+                image: imageUrl,
               });
 
               await project.save();
               res.json({ project });
             }
-          ).end(req.file.buffer);
+          );
+          stream.end(req.file.buffer);
         } else {
           const project = new Project(req.body);
           await project.save();
@@ -53,32 +53,6 @@ module.exports = function (verifyToken) {
       }
     }
   );
-
-  // ---------------- UPDATE ----------------
-  // PUT /api/projects/:id
-  router.put("/:id", verifyToken, async (req, res) => {
-    try {
-      const updated = await Project.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
-      res.json({ project: updated });
-    } catch {
-      res.status(500).json({ error: "Update failed" });
-    }
-  });
-
-  // ---------------- DELETE ----------------
-  // DELETE /api/projects/:id
-  router.delete("/:id", verifyToken, async (req, res) => {
-    try {
-      await Project.findByIdAndDelete(req.params.id);
-      res.json({ success: true });
-    } catch {
-      res.status(500).json({ error: "Delete failed" });
-    }
-  });
 
   return router;
 };
