@@ -23,19 +23,15 @@ module.exports = function (verifyToken) {
     upload.single("image"),
     async (req, res) => {
       try {
-        let imageUrl = "";
-
         if (req.file) {
           const stream = cloudinary.uploader.upload_stream(
             { folder: "projects" },
             async (error, result) => {
               if (error) throw error;
 
-              imageUrl = result.secure_url;
-
               const project = new Project({
                 ...req.body,
-                image: imageUrl,
+                image: result.secure_url,
               });
 
               await project.save();

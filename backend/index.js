@@ -87,7 +87,7 @@ app.get("/api/test", (req, res) => {
 // ROUTES (🔥 THIS WAS THE BUG — NOW FIXED)
 // -------------------------------------------------------------
 app.use("/api/admin", authRoutes);
-app.use("/api", projectRoutes(verifyToken));     // ✅ FIX
+app.use("/api/projects", projectRoutes(verifyToken));     // ✅ FIX
 app.use("/api", messageRoutes(verifyToken));
 app.use("/api", certificateRoutes(verifyToken));
 
