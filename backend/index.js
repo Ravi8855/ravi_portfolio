@@ -19,28 +19,27 @@ const certificateRoutes = require("./routes/certificate.routes");
 const app = express();
 
 // -------------------------------------------------------------
-// CORS CONFIG (LOCAL + RENDER)
+// ✅ CORS CONFIG (FIXED DOMAIN ONLY)
 // -------------------------------------------------------------
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://ravi-portfolio-u3e9.onrender.com",
-      "https://ravi-portfolio.vercel.app"   // ✅ ADD THIS
+      "https://raviportfolio-tau.vercel.app", // ✅ CORRECT VERCEL DOMAIN
+      "https://ravi-portfolio-cjg.onrender.com"
     ],
     credentials: true,
   })
 );
 
-
 // -------------------------------------------------------------
-// BODY PARSERS  ⭐ MUST COME BEFORE ROUTES
+// BODY PARSERS
 // -------------------------------------------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // -------------------------------------------------------------
-// STATIC FILES (optional)
+// STATIC FILES
 // -------------------------------------------------------------
 app.use("/uploads", express.static("uploads"));
 
@@ -53,7 +52,7 @@ mongoose
   .catch((err) => console.error("❌ MongoDB Error:", err));
 
 // -------------------------------------------------------------
-// CLOUDINARY CONFIG  ⭐ MUST COME BEFORE UPLOAD
+// CLOUDINARY CONFIG
 // -------------------------------------------------------------
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -67,7 +66,7 @@ cloudinary.config({
 const upload = multer({ storage: multer.memoryStorage() });
 
 // -------------------------------------------------------------
-// ✅ FILE UPLOAD ROUTE (KEEP THIS)
+// FILE UPLOAD ROUTE
 // -------------------------------------------------------------
 app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
@@ -84,8 +83,6 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
       public_id: uuidv4(),
     });
 
-    console.log("CLOUDINARY UPLOAD RESULT:", result.secure_url); // ⭐ REQUIRED
-
     res.json({ url: result.secure_url });
   } catch (err) {
     console.error("UPLOAD ERROR:", err);
@@ -94,7 +91,7 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
 });
 
 // -------------------------------------------------------------
-// TEST ROUTE
+// ✅ TEST ROUTE (CORRECT)
 // -------------------------------------------------------------
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working perfectly 🚀" });
@@ -118,5 +115,4 @@ app.use("/api", certificateRoutes(verifyToken));
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌍 Test API: http://localhost:${PORT}/api/test`);
 });
