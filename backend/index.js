@@ -26,6 +26,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://ravi-portfolio-u3e9.onrender.com",
+      "https://raviportfolio-tau.vercel.app"
     ],
     credentials: true,
   })
