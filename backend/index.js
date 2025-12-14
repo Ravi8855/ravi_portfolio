@@ -9,7 +9,7 @@ const verifyToken = require("./middleware/verifyToken");
 
 // ROUTES
 const authRoutes = require("./routes/auth");
-const projectRoutes = require("./routes/project.routes"); // ✅ KEEP ONLY ONCE
+const projectRoutes = require("./routes/project.routes");
 const messageRoutes = require("./routes/message.routes");
 const certificateRoutes = require("./routes/certificate.routes");
 
@@ -19,7 +19,7 @@ const certificateRoutes = require("./routes/certificate.routes");
 const app = express();
 
 // -------------------------------------------------------------
-// CORS CONFIG
+// CORS
 // -------------------------------------------------------------
 app.use(
   cors({
@@ -39,11 +39,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // -------------------------------------------------------------
-// STATIC FILES
-// -------------------------------------------------------------
-app.use("/uploads", express.static("uploads"));
-
-// -------------------------------------------------------------
 // MONGO DB
 // -------------------------------------------------------------
 mongoose
@@ -52,7 +47,7 @@ mongoose
   .catch((err) => console.error("❌ MongoDB Error:", err));
 
 // -------------------------------------------------------------
-// CLOUDINARY CONFIG
+// CLOUDINARY
 // -------------------------------------------------------------
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -66,26 +61,17 @@ cloudinary.config({
 const upload = multer({ storage: multer.memoryStorage() });
 
 // -------------------------------------------------------------
-// FILE UPLOAD ROUTE
+// FILE UPLOAD
 // -------------------------------------------------------------
 app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString(
-      "base64"
-    )}`;
-
+    const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
     const result = await cloudinary.uploader.upload(base64File, {
       folder: "portfolio",
       public_id: uuidv4(),
     });
-
     res.json({ url: result.secure_url });
   } catch (err) {
-    console.error("UPLOAD ERROR:", err);
     res.status(500).json({ error: "Upload failed" });
   }
 });
@@ -98,14 +84,10 @@ app.get("/api/test", (req, res) => {
 });
 
 // -------------------------------------------------------------
-// AUTH ROUTES
+// ROUTES (🔥 THIS WAS THE BUG — NOW FIXED)
 // -------------------------------------------------------------
 app.use("/api/admin", authRoutes);
-
-// -------------------------------------------------------------
-// MAIN API ROUTES
-// -------------------------------------------------------------
-app.use("/api/projects", projectRoutes(verifyToken)); // ✅ FIXED & CORRECT
+app.use("/api", projectRoutes(verifyToken));     // ✅ FIX
 app.use("/api", messageRoutes(verifyToken));
 app.use("/api", certificateRoutes(verifyToken));
 
