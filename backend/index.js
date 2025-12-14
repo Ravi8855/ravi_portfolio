@@ -9,7 +9,7 @@ const verifyToken = require("./middleware/verifyToken");
 
 // ROUTES
 const authRoutes = require("./routes/auth");
-const projectRoutes = require("./routes/project.routes");
+const projectRoutes = require("./routes/project.routes"); // ✅ KEEP ONLY ONCE
 const messageRoutes = require("./routes/message.routes");
 const certificateRoutes = require("./routes/certificate.routes");
 
@@ -19,14 +19,14 @@ const certificateRoutes = require("./routes/certificate.routes");
 const app = express();
 
 // -------------------------------------------------------------
-// ✅ CORS CONFIG (FIXED DOMAIN ONLY)
+// CORS CONFIG
 // -------------------------------------------------------------
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://raviportfolio-tau.vercel.app", // ✅ CORRECT VERCEL DOMAIN
-      "https://ravi-portfolio-cjg.onrender.com"
+      "https://raviportfolio-tau.vercel.app",
+      "https://ravi-portfolio-cjg.onrender.com",
     ],
     credentials: true,
   })
@@ -91,7 +91,7 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
 });
 
 // -------------------------------------------------------------
-// ✅ TEST ROUTE (CORRECT)
+// TEST ROUTE
 // -------------------------------------------------------------
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working perfectly 🚀" });
@@ -105,15 +105,9 @@ app.use("/api/admin", authRoutes);
 // -------------------------------------------------------------
 // MAIN API ROUTES
 // -------------------------------------------------------------
-// MAIN API ROUTES
-const projectRoutes = require("./routes/project.routes");
-
-// PUBLIC + ADMIN PROJECT ROUTES
-app.use("/api/projects", projectRoutes(verifyToken));
-
-app.use("/api", messageRoutes(verifyToken));   // messages
-app.use("/api", certificateRoutes(verifyToken)); // certificates
-
+app.use("/api/projects", projectRoutes(verifyToken)); // ✅ FIXED & CORRECT
+app.use("/api", messageRoutes(verifyToken));
+app.use("/api", certificateRoutes(verifyToken));
 
 // -------------------------------------------------------------
 // START SERVER
