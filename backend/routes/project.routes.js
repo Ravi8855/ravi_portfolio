@@ -1,47 +1,82 @@
 // server/routes/project.routes.js
 const express = require("express");
 const Project = require("../models/Project");
+const upload = require("../middleware/multer");
+const cloudinary = require("../cloudinary");
 
 module.exports = function (verifyToken) {
   const router = express.Router();
 
-  // Public list
+  // ---------------- PUBLIC ----------------
   router.get("/projects", async (req, res) => {
     try {
       const projects = await Project.find().sort({ createdAt: -1 });
       res.json({ projects });
-    } catch (err) {
+    } catch {
       res.status(500).json({ error: "Server error" });
     }
   });
 
-  // Create project (admin)
-  router.post("/projects", verifyToken, async (req, res) => {
-    try {
-      const project = new Project(req.body);
-      await project.save();
-      res.json({ project });
-    } catch (err) {
-      res.status(500).json({ error: "Save failed" });
-    }
-  });
+  // ---------------- CREATE (ADMIN) ----------------
+  router.post(
+    "/projects",
+    verifyToken,
+    upload.single("image"), // ✅ IMPORTANT
+    async (req, res) => {
+      try {
+        let imageUrl = "";
 
-  // Update project
+        if (req.file) {
+          const uploadResult = await cloudinary.uploader.upload_stream(
+            { folder: "projects" },
+            async (error, result) => {
+              if (error) throw error;
+
+              imageUrl = result.secure_url;
+
+              const project = new Project({
+                ...req.body,
+                image: imageUrl,
+              });
+
+              await project.save();
+              res.json({ project });
+            }
+          );
+
+          uploadResult.end(req.file.buffer);
+        } else {
+          // No image → still allow project
+          const project = new Project(req.body);
+          await project.save();
+          res.json({ project });
+        }
+      } catch (err) {
+        res.status(500).json({ error: "Save failed" });
+      }
+    }
+  );
+
+  // ---------------- UPDATE ----------------
   router.put("/projects/:id", verifyToken, async (req, res) => {
     try {
-      const updated = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const updated = await Project.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
       res.json({ project: updated });
-    } catch (err) {
+    } catch {
       res.status(500).json({ error: "Update failed" });
     }
   });
 
-  // Delete project
+  // ---------------- DELETE ----------------
   router.delete("/projects/:id", verifyToken, async (req, res) => {
     try {
       await Project.findByIdAndDelete(req.params.id);
       res.json({ success: true });
-    } catch (err) {
+    } catch {
       res.status(500).json({ error: "Delete failed" });
     }
   });
