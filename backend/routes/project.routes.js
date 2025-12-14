@@ -1,65 +1,84 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+// backend/routes/project.routes.js
+const express = require("express");
+const Project = require("../models/Project");
+const upload = require("../middleware/multer");
+const cloudinary = require("../cloudinary");
 
-const API = import.meta.env.VITE_API_URL;
+module.exports = function (verifyToken) {
+  const router = express.Router();
 
-const Projects = () => {
-  const [projects, setProjects] = useState([]);
-  const [error, setError] = useState("");
+  // ---------------- PUBLIC ----------------
+  // GET /api/projects
+  router.get("/", async (req, res) => {
+    try {
+      const projects = await Project.find().sort({ createdAt: -1 });
+      res.json({ projects });
+    } catch (err) {
+      res.status(500).json({ error: "Server error" });
+    }
+  });
 
-  useEffect(() => {
-    const fetchProjects = async () => {
+  // ---------------- CREATE (ADMIN) ----------------
+  // POST /api/projects
+  router.post(
+    "/",
+    verifyToken,
+    upload.single("image"),
+    async (req, res) => {
       try {
-        // ✅ CORRECT PLACE FOR THIS LINE
-        const res = await axios.get(`${API}/projects`);
-        setProjects(res.data.projects); // 👈 THIS WAS MISSING
+        let imageUrl = "";
+
+        if (req.file) {
+          cloudinary.uploader.upload_stream(
+            { folder: "projects" },
+            async (error, result) => {
+              if (error) return res.status(500).json({ error: "Upload failed" });
+
+              const project = new Project({
+                ...req.body,
+                image: result.secure_url,
+              });
+
+              await project.save();
+              res.json({ project });
+            }
+          ).end(req.file.buffer);
+        } else {
+          const project = new Project(req.body);
+          await project.save();
+          res.json({ project });
+        }
       } catch (err) {
-        setError("Failed to load projects");
-        console.error(err);
+        res.status(500).json({ error: "Save failed" });
       }
-    };
-
-    fetchProjects();
-  }, []);
-
-  if (error) return <p className="text-red-500">{error}</p>;
-
-  return (
-    <section id="projects" className="py-16">
-      <h2 className="text-3xl font-bold mb-8 text-center">Projects</h2>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <div
-            key={project._id}
-            className="border rounded-lg p-4 shadow hover:shadow-lg transition"
-          >
-            {project.image && (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-48 object-cover rounded mb-4"
-              />
-            )}
-
-            <h3 className="text-xl font-semibold">{project.title}</h3>
-            <p className="text-gray-600 mt-2">{project.description}</p>
-
-            {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blue-600 mt-3 inline-block"
-              >
-                View Project →
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
-    </section>
+    }
   );
-};
 
-export default Projects;
+  // ---------------- UPDATE ----------------
+  // PUT /api/projects/:id
+  router.put("/:id", verifyToken, async (req, res) => {
+    try {
+      const updated = await Project.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      res.json({ project: updated });
+    } catch {
+      res.status(500).json({ error: "Update failed" });
+    }
+  });
+
+  // ---------------- DELETE ----------------
+  // DELETE /api/projects/:id
+  router.delete("/:id", verifyToken, async (req, res) => {
+    try {
+      await Project.findByIdAndDelete(req.params.id);
+      res.json({ success: true });
+    } catch {
+      res.status(500).json({ error: "Delete failed" });
+    }
+  });
+
+  return router;
+};

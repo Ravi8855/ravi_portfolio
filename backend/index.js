@@ -106,7 +106,11 @@ app.use("/api/admin", authRoutes);
 // MAIN API ROUTES
 // -------------------------------------------------------------
 // MAIN API ROUTES
-app.use("/api", projectRoutes(verifyToken));   // projects
+const projectRoutes = require("./routes/project.routes");
+
+// PUBLIC + ADMIN PROJECT ROUTES
+app.use("/api/projects", projectRoutes(verifyToken));
+
 app.use("/api", messageRoutes(verifyToken));   // messages
 app.use("/api", certificateRoutes(verifyToken)); // certificates
 
