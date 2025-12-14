@@ -62,7 +62,8 @@ export default function AdminDashboard() {
       image: imageUrl,
     };
 
-    await createProject(payload);
+    await API.post("/projects", payload);
+
 
     // Show popup
     setShowSaved(true);
