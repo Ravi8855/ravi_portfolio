@@ -105,9 +105,11 @@ app.use("/api/admin", authRoutes);
 // -------------------------------------------------------------
 // MAIN API ROUTES
 // -------------------------------------------------------------
-app.use("/api", projectRoutes(verifyToken));
-app.use("/api", messageRoutes(verifyToken));
-app.use("/api", certificateRoutes(verifyToken));
+// MAIN API ROUTES
+app.use("/api", projectRoutes(verifyToken));   // projects
+app.use("/api", messageRoutes(verifyToken));   // messages
+app.use("/api", certificateRoutes(verifyToken)); // certificates
+
 
 // -------------------------------------------------------------
 // START SERVER

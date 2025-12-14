@@ -1,85 +1,65 @@
-// server/routes/project.routes.js
-const express = require("express");
-const Project = require("../models/Project");
-const upload = require("../middleware/multer");
-const cloudinary = require("../cloudinary");
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-module.exports = function (verifyToken) {
-  const router = express.Router();
+const API = import.meta.env.VITE_API_URL;
 
-  // ---------------- PUBLIC ----------------
-  router.get("/projects", async (req, res) => {
-    try {
-      const projects = await Project.find().sort({ createdAt: -1 });
-      res.json({ projects });
-    } catch {
-      res.status(500).json({ error: "Server error" });
-    }
-  });
+const Projects = () => {
+  const [projects, setProjects] = useState([]);
+  const [error, setError] = useState("");
 
-  // ---------------- CREATE (ADMIN) ----------------
-  router.post(
-    "/projects",
-    verifyToken,
-    upload.single("image"), // ✅ IMPORTANT
-    async (req, res) => {
+  useEffect(() => {
+    const fetchProjects = async () => {
       try {
-        let imageUrl = "";
-
-        if (req.file) {
-          const uploadResult = await cloudinary.uploader.upload_stream(
-            { folder: "projects" },
-            async (error, result) => {
-              if (error) throw error;
-
-              imageUrl = result.secure_url;
-
-              const project = new Project({
-                ...req.body,
-                image: imageUrl,
-              });
-
-              await project.save();
-              res.json({ project });
-            }
-          );
-
-          uploadResult.end(req.file.buffer);
-        } else {
-          // No image → still allow project
-          const project = new Project(req.body);
-          await project.save();
-          res.json({ project });
-        }
+        // ✅ CORRECT PLACE FOR THIS LINE
+        const res = await axios.get(`${API}/projects`);
+        setProjects(res.data.projects); // 👈 THIS WAS MISSING
       } catch (err) {
-        res.status(500).json({ error: "Save failed" });
+        setError("Failed to load projects");
+        console.error(err);
       }
-    }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (error) return <p className="text-red-500">{error}</p>;
+
+  return (
+    <section id="projects" className="py-16">
+      <h2 className="text-3xl font-bold mb-8 text-center">Projects</h2>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project) => (
+          <div
+            key={project._id}
+            className="border rounded-lg p-4 shadow hover:shadow-lg transition"
+          >
+            {project.image && (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-48 object-cover rounded mb-4"
+              />
+            )}
+
+            <h3 className="text-xl font-semibold">{project.title}</h3>
+            <p className="text-gray-600 mt-2">{project.description}</p>
+
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 mt-3 inline-block"
+              >
+                View Project →
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
   );
-
-  // ---------------- UPDATE ----------------
-  router.put("/projects/:id", verifyToken, async (req, res) => {
-    try {
-      const updated = await Project.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
-      res.json({ project: updated });
-    } catch {
-      res.status(500).json({ error: "Update failed" });
-    }
-  });
-
-  // ---------------- DELETE ----------------
-  router.delete("/projects/:id", verifyToken, async (req, res) => {
-    try {
-      await Project.findByIdAndDelete(req.params.id);
-      res.json({ success: true });
-    } catch {
-      res.status(500).json({ error: "Delete failed" });
-    }
-  });
-
-  return router;
 };
+
+export default Projects;
