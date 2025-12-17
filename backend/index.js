@@ -23,11 +23,13 @@ const app = express();
 // -------------------------------------------------------------
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://raviportfolio-tau.vercel.app",
-      "https://ravi-portfolio-cjg.onrender.com",
-    ],
+    // origin: [
+    //   "http://localhost:5173",
+    //   "https://raviportfolio-tau.vercel.app",
+    //   "https://ravi-portfolio-cjg.onrender.com",
+    // ],
+    
+    origin: "*",
     credentials: true,
   })
 );
