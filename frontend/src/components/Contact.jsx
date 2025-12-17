@@ -38,7 +38,7 @@ export default function Contact() {
     };
 
     try {
-      await fetch("http://localhost:4000/api/message", {
+      await fetch("https://ravi-portfolio-syt2.onrender.com/api/message", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
