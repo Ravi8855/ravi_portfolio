@@ -70,7 +70,7 @@ const Hero = () => {
 </h4>
 
                 <p className="text-sm text-slate-100">
-                  Full-Stack · AI-powered Apps
+                  Full-Stack & Software Developer
                 </p>
                 <div className="mt-3 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-fuchsia-400 to-transparent transition-all duration-500" />
               </div>
