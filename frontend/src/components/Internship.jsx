@@ -6,7 +6,7 @@ const Internship = () => {
     {
       id: 1,
       tag: "GUEST HOUSE BOOKING — INTERNSHIP PROJECT",
-      role: "Frontend Developer Internship",
+      role: " Full stack developer Intern",
       projectName: "Guest House Booking System",
       tasks: [
         "Secure user authentication & registration.",
@@ -27,8 +27,8 @@ const Internship = () => {
     },
     {
       id: 2,
-      tag: "FRONTEND DEVELOPER ASSIGNMENT",
-      role: "Frontend Developer Internship",
+      tag: "Task mangment ",
+      role: "Web Application Intern",
       projectName: "Task Management Dashboard",
       tasks: [
         "Secure user authentication & registration.",
