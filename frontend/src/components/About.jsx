@@ -43,7 +43,7 @@ export default function About() {
             <p className="text-lg leading-relaxed text-gray-300">
               A passionate{" "}
               <span className="text-indigo-400 font-semibold">
-                Full-Stack Developer
+                Software Developer
               </span>{" "}
               &amp;
               <span className="text-pink-400 font-semibold"> AI Enthusiast</span>{" "}
