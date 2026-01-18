@@ -28,7 +28,7 @@ const Hero = () => {
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            Full-Stack Developer · AI Enthusiast
+            Software Developer · AI Enthusiast
           </motion.div>
 
           {/* Main heading */}
@@ -70,7 +70,7 @@ const Hero = () => {
 </h4>
 
                 <p className="text-sm text-slate-100">
-                  Full-Stack & Software Developer
+                   Software Developer
                 </p>
                 <div className="mt-3 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-fuchsia-400 to-transparent transition-all duration-500" />
               </div>
