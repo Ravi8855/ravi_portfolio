@@ -23,7 +23,7 @@ export default function Projects() {
         
         {/* Heading */}
         <h2 className="text-4xl font-bold text-center mb-16">
-          Featured Projects
+           Projects
         </h2>
 
         {/* Loading */}
