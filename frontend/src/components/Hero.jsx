@@ -9,6 +9,44 @@ const fadeUp = {
 
 const roleText = "Software Developer";
 
+const bubbles = [
+  { className: "left-2 top-8 h-3 w-3", delay: 0, moveX: 10, moveY: -18 },
+  { className: "right-4 top-10 h-4 w-4", delay: 0.7, moveX: -12, moveY: -22 },
+  { className: "left-0 bottom-16 h-5 w-5", delay: 1.1, moveX: 14, moveY: -16 },
+  { className: "right-0 bottom-12 h-3 w-3", delay: 1.6, moveX: -10, moveY: -20 },
+  { className: "left-10 -bottom-2 h-2.5 w-2.5", delay: 2.1, moveX: 8, moveY: -14 },
+  { className: "right-12 -top-3 h-2.5 w-2.5", delay: 2.6, moveX: -8, moveY: 14 },
+];
+
+const roleContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.045,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const roleLetter = {
+  hidden: (index) => ({
+    opacity: 0,
+    x: index % 2 === 0 ? -28 : 28,
+    y: index % 3 === 0 ? -36 : 36,
+    rotate: index % 2 === 0 ? -10 : 10,
+  }),
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    rotate: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
 const Hero = () => {
   return (
     <section
@@ -50,38 +88,15 @@ const Hero = () => {
             />
 
             <motion.p
-              variants={fadeUp}
-              transition={{ duration: 0.65, ease: "easeOut" }}
+              variants={roleContainer}
               className="relative mb-10 text-sm font-semibold uppercase tracking-[0.28em] sm:text-base"
               aria-label={roleText}
             >
               {Array.from(roleText).map((letter, index) => (
                 <motion.span
                   key={`${letter}-${index}`}
-                  initial={{
-                    opacity: 0,
-                    x: index % 2 === 0 ? -24 : 24,
-                    y: index % 3 === 0 ? -34 : 34,
-                    rotate: index % 2 === 0 ? -8 : 8,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                    rotate: 0,
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                  }}
-                  transition={{
-                    opacity: { duration: 0.35, delay: 0.35 + index * 0.035 },
-                    x: { duration: 0.55, delay: 0.35 + index * 0.035, ease: "easeOut" },
-                    y: { duration: 0.55, delay: 0.35 + index * 0.035, ease: "easeOut" },
-                    rotate: { duration: 0.55, delay: 0.35 + index * 0.035, ease: "easeOut" },
-                    backgroundPosition: {
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                  }}
+                  custom={index}
+                  variants={roleLetter}
                   className={`inline-block bg-gradient-to-r from-sky-200 via-cyan-300 to-sky-200 bg-[length:200%_100%] bg-clip-text text-transparent ${
                     letter === " " ? "w-3 sm:w-4" : ""
                   }`}
@@ -91,39 +106,33 @@ const Hero = () => {
               ))}
             </motion.p>
 
-            <motion.div
-              variants={fadeUp}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="relative mx-auto h-60 w-60 rounded-full bg-gradient-to-br from-sky-300 via-indigo-300 to-white p-[4px] shadow-[0_30px_90px_rgba(56,189,248,0.28)] sm:h-72 sm:w-72"
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-3 rounded-full border border-dashed border-sky-300/30"
-              />
-              <motion.div
-                animate={{ scale: [1, 1.04, 1], opacity: [0.45, 0.75, 0.45] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -inset-5 rounded-full bg-sky-400/15 blur-xl"
-              />
-              <motion.span
-                animate={{ rotate: 360 }}
-                transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-7 rounded-full"
-              >
-                <span className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(103,232,249,0.95)]" />
-                <span className="absolute bottom-0 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-indigo-300 shadow-[0_0_18px_rgba(165,180,252,0.9)]" />
-              </motion.span>
+            <div className="relative mx-auto h-60 w-60 rounded-full bg-gradient-to-br from-sky-300 via-indigo-300 to-white p-[4px] shadow-[0_30px_90px_rgba(56,189,248,0.28)] sm:h-72 sm:w-72">
+              {bubbles.map((bubble, index) => (
+                <motion.span
+                  key={index}
+                  animate={{
+                    x: [0, bubble.moveX, 0],
+                    y: [0, bubble.moveY, 0],
+                    scale: [1, 1.25, 1],
+                    opacity: [0.35, 0.9, 0.35],
+                  }}
+                  transition={{
+                    duration: 3.6 + index * 0.35,
+                    delay: bubble.delay,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className={`pointer-events-none absolute rounded-full border border-cyan-200/70 bg-cyan-200/20 shadow-[0_0_18px_rgba(125,211,252,0.75)] backdrop-blur-sm ${bubble.className}`}
+                />
+              ))}
               <div className="h-full w-full overflow-hidden rounded-full border-[6px] border-[#07111f] bg-slate-950">
-                <motion.img
+                <img
                   src="/ravi-profile.png"
                   alt="Ravi Chalmar professional portrait"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   className="h-full w-full object-cover object-[center_18%]"
                 />
               </div>
-            </motion.div>
+            </div>
 
             <motion.h1
               variants={fadeUp}
