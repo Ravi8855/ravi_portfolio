@@ -53,7 +53,7 @@ export default function Footer() {
 
           <p className="flex items-center gap-3 mt-3 text-gray-300 hover:text-blue-300 transition">
             <FaMapMarkerAlt className="text-blue-400 drop-shadow-sm" />
-            Visvesvaraya Technological University, Mysore, Karnataka
+            Magarpatta, Pune, Maharashtra
           </p>
 
           <p className="flex items-center gap-3 mt-3 text-gray-300 hover:text-green-300 transition">

@@ -36,20 +36,33 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-xl py-3">
-        <div className="w-full px-6 flex items-center justify-between">
-          <h1 className="text-white font-bold text-xl">
-            Welcome to <span className="text-indigo-400">Ravi's Portfolio</span>
-          </h1>
+      <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-[#050816]/80 py-4 backdrop-blur-xl">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 md:px-10 lg:px-14">
+          <button
+            onClick={() => handleNavClick("#home")}
+            className="group flex items-center gap-3 text-left"
+            aria-label="Go to home section"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-400 text-sm font-black text-slate-950 shadow-[0_12px_30px_rgba(56,189,248,0.22)]">
+              RC
+            </span>
+            <span>
+              <span className="block text-base font-bold leading-none text-white">
+                Ravi Chalmar
+              </span>
+              <span className="mt-1 block text-xs font-medium text-slate-400">
+                Full Stack Developer
+              </span>
+            </span>
+          </button>
 
           {/* Desktop Menu */}
-          <ul className="hidden md:flex items-center gap-10">
+          <ul className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <li key={item.label}>
                 <button
                   onClick={() => handleNavClick(item.to)}
-                  className="text-base md:text-lg font-semibold text-gray-300 hover:text-white transition-all"
-
+                  className="rounded-full px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/10 hover:text-white"
                 >
                   {item.label}
                 </button>
@@ -59,8 +72,9 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white text-3xl"
+            className="rounded-xl border border-white/10 px-3 py-2 text-2xl leading-none text-white md:hidden"
             onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
           >
             ☰
           </button>
@@ -86,6 +100,7 @@ export default function Navbar() {
         <button
           onClick={() => setMenuOpen(false)}
           className="absolute top-4 right-4 text-gray-300 text-3xl hover:text-white transition"
+          aria-label="Close menu"
         >
           ✕
         </button>

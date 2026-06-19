@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar";  // ✅ ADD THIS
 import Hero from "../components/Hero";
 import About from "../components/About";
 import Skills from "../components/Skills";
@@ -11,8 +10,6 @@ import Contact from "../components/Contact";
 export default function PortfolioPage() {
   return (
     <>
-      <Navbar />   {/* ✅ NAVBAR ALWAYS ON TOP */}
-
       <section id="hero"><Hero /></section>
       <section id="about"><About /></section>
       <section id="skills"><Skills /></section>

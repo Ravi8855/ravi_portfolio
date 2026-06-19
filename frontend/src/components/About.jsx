@@ -48,44 +48,14 @@ export default function About() {
               &amp;
               <span className="text-pink-400 font-semibold"> AI Enthusiast</span>{" "}
               from
-              <span className="text-blue-300 font-semibold"> Mysuru, Karnataka</span>.
+              <span className="text-blue-300 font-semibold"> Pune, Maharashtra</span>.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-300">
-              I'm a final-year Computer Science student who loves building fast,
-              modern and intelligent applications. I enjoy working on interactive
-              UIs, 3D experiences, and solving real-world problems with clean and
-              meaningful code.
+              I enjoy building fast, modern and intelligent applications with
+              clean interfaces, responsive layouts, and meaningful user
+              experiences.
             </p>
-
-            {/* Resume + Status Badge */}
-            <div className="mt-6 flex flex-wrap gap-4">
-
-              <a
-                href="/Ravi_Resume.pdf"
-                download
-                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-500 px-6 py-2.5 text-sm md:text-base font-semibold text-white shadow-[0_16px_40px_rgba(79,70,229,0.7)] hover:scale-[1.03] active:scale-[0.97] transition-transform"
-              >
-                Download Resume
-              </a>
-
-              <div
-                className="
-                  inline-flex items-center justify-center
-                  rounded-xl
-                  px-6 py-2.5
-                  text-sm md:text-base font-semibold text-white
-                  bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-500
-                  shadow-[0_16px_40px_rgba(79,70,229,0.7)]
-                  hover:scale-[1.03]
-                  active:scale-[0.97]
-                  transition-transform
-                "
-              >
-                🎓 B.Tech Final Year Student, Mysore
-              </div>
-
-            </div>
           </motion.div>
 
           {/* RIGHT — EDUCATION TIMELINE */}
