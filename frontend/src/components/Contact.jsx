@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import {
+  Mail,
+  MessageSquare,
+  Send,
+  Sparkles,
+  User,
+} from "lucide-react";
 
 export default function Contact() {
-  const [captcha, setCaptcha] = useState("");
-  const [inputCaptcha, setInputCaptcha] = useState("");
-  const [captchaError, setCaptchaError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
-  // Generate Captcha
-  const generateCaptcha = () => {
-    const code = Math.random().toString(36).substring(2, 7).toUpperCase();
-    setCaptcha(code);
-  };
-
-  useEffect(() => {
-    generateCaptcha();
-  }, []);
+  const inputClass =
+    "w-full rounded-2xl border border-white/10 bg-white/[0.04] px-11 py-3.5 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-300/70 focus:bg-white/[0.07] focus:shadow-[0_0_0_4px_rgba(34,211,238,0.08)] sm:px-12 sm:py-4";
 
   // -----------------------------------------------------------
   // FIXED: Send message to backend (Admin Messages Panel Works)
   // -----------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (inputCaptcha !== captcha) {
-      setCaptchaError("Captcha does not match ❌");
-      return;
-    }
-
-    setCaptchaError("");
 
     // Collect form data
     const formData = {
@@ -48,23 +38,41 @@ export default function Contact() {
       setShowPopup(true);
 
       e.target.reset();
-      generateCaptcha();
     } catch (err) {
       console.error("Message send error:", err);
     }
   };
 
   return (
-    <section id="contact" className="px-6 md:px-12 lg:px-20 py-16">
+    <section
+      id="contact"
+      className="relative overflow-hidden bg-[#050816] px-4 py-16 text-white sm:px-6 sm:py-20 md:px-12 lg:px-20"
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 top-16 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-indigo-500/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_34%)]" />
+      </div>
+
       {/* Header */}
-      <div className="text-center mb-10">
-        <h2 className="text-4xl font-extrabold mb-3 bg-gradient-to-r from-indigo-400 to-purple-500 text-transparent bg-clip-text">
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 mx-auto mb-8 max-w-3xl text-center sm:mb-12"
+      >
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300 sm:tracking-[0.32em]">
+          Let's connect
+        </p>
+        <h2 className="mb-4 bg-gradient-to-r from-white via-cyan-100 to-indigo-200 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl">
           Contact Me
         </h2>
-        <p className="text-sm text-gray-400">
-          Feel free to reach out — I'm always available!
+        <p className="text-sm leading-6 text-slate-400 md:text-base">
+          Have a project, opportunity, or collaboration in mind? Send a message
+          and I will get back to you soon.
         </p>
-      </div>
+      </motion.div>
 
       {/* PREMIUM SUCCESS POPUP */}
       {showPopup && (
@@ -80,11 +88,11 @@ export default function Contact() {
             transition={{ duration: 0.25 }}
             className="
               relative bg-gradient-to-br from-purple-600/20 to-indigo-600/20
-              border border-white/10 px-10 py-6 rounded-3xl shadow-xl 
+              border border-white/10 w-[calc(100%-2rem)] max-w-md px-6 py-6 sm:px-10 rounded-3xl shadow-xl 
               text-center backdrop-blur-xl
             "
           >
-            <h2 className="text-white text-2xl font-semibold mb-2">
+            <h2 className="text-white text-xl sm:text-2xl font-semibold mb-2">
               Message Sent Successfully! 🎉
             </h2>
 
@@ -103,78 +111,130 @@ export default function Contact() {
         </div>
       )}
 
-      {/* Contact Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-2xl mx-auto bg-[#0f1120] border border-gray-800 p-8 rounded-2xl shadow-xl space-y-6"
-      >
-        <input
-          name="name"
-          type="text"
-          placeholder="Your Name"
-          className="w-full p-3 rounded-lg bg-[#111525] border border-gray-700 
-                     text-gray-200 outline-none focus:border-indigo-500"
-          required
-        />
-
-        <input
-          name="email"
-          type="email"
-          placeholder="Your Email"
-          className="w-full p-3 rounded-lg bg-[#111525] border border-gray-700 
-                     text-gray-200 outline-none focus:border-indigo-500"
-          required
-        />
-
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          className="w-full h-32 p-3 rounded-lg bg-[#111525] border border-gray-700 
-                     text-gray-200 outline-none focus:border-indigo-500"
-          required
-        ></textarea>
-
-        {/* CAPTCHA */}
-        <div className="flex items-center gap-4">
-          <div className="px-4 py-2 bg-[#14182b] border border-purple-500 rounded-lg text-lg tracking-widest font-bold text-purple-300 shadow-lg">
-            {captcha}
-          </div>
-
-          <button
-            type="button"
-            onClick={generateCaptcha}
-            className="px-3 py-2 text-xs bg-indigo-600 hover:bg-indigo-700 
-                       rounded-lg text-white shadow-md"
-          >
-            Refresh
-          </button>
-        </div>
-
-        <input
-          type="text"
-          placeholder="Enter Captcha"
-          className="w-full p-3 rounded-lg bg-[#111525] border border-gray-700 
-                     text-gray-200 outline-none focus:border-indigo-500"
-          onChange={(e) => setInputCaptcha(e.target.value.toUpperCase())}
-          required
-        />
-
-        {captchaError && (
-          <p className="text-red-400 text-sm">{captchaError}</p>
-        )}
-
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full py-3 rounded-lg font-semibold
-                     bg-gradient-to-r from-blue-600 to-indigo-600
-                     hover:from-blue-700 hover:to-indigo-700
-                     shadow-lg shadow-blue-500/30
-                     transition-all duration-300"
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-5 sm:gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6 }}
+          className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-5 text-center shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-8 sm:text-left md:p-10 lg:rounded-[2rem]"
         >
-          Send Message
-        </button>
-      </form>
+          <div className="absolute right-6 top-6 h-24 w-24 rounded-full bg-cyan-300/10 blur-2xl" />
+          <div className="relative">
+            <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 shadow-[0_0_35px_rgba(34,211,238,0.25)] sm:mb-8 sm:h-14 sm:w-14">
+              <Sparkles size={26} />
+            </div>
+
+            <h3 className="mb-3 text-xl font-bold tracking-tight sm:mb-4 sm:text-2xl md:text-3xl">
+              Let's build something meaningful together.
+            </h3>
+            <p className="mb-6 text-sm leading-6 text-slate-400 sm:mb-8 sm:leading-7 md:text-base">
+              Share the details and I will respond with clear next steps. Your
+              message goes directly to the admin panel for a faster reply.
+            </p>
+
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">
+                  Response
+                </p>
+                <p className="mt-1 font-semibold text-slate-100">
+                  Usually within 24 hours
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">
+                  Best for
+                </p>
+                <p className="mt-1 font-semibold text-slate-100">
+                  Projects, internships, freelance work
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Contact Form */}
+        <motion.form
+          initial={{ opacity: 0, x: 24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          onSubmit={handleSubmit}
+          className="relative overflow-hidden rounded-3xl border border-cyan-300/15 bg-slate-950/70 p-5 shadow-[0_30px_100px_rgba(8,47,73,0.45)] backdrop-blur-2xl sm:p-6 md:p-8 lg:rounded-[2rem]"
+        >
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
+          <div className="absolute -right-16 -top-20 h-48 w-48 rounded-full bg-indigo-500/15 blur-3xl" />
+
+          <div className="relative space-y-5">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Full name
+              </label>
+              <div className="relative">
+                <User
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300"
+                />
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  className={inputClass}
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Email address
+              </label>
+              <div className="relative">
+                <Mail
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300"
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  className={inputClass}
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Message
+              </label>
+              <div className="relative">
+                <MessageSquare
+                  size={18}
+                  className="absolute left-4 top-5 text-cyan-300"
+                />
+                <textarea
+                  name="message"
+                  placeholder="Tell me about your idea, role, or project..."
+                  className={`${inputClass} min-h-36 resize-none leading-6 sm:min-h-40`}
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 px-6 py-3.5 font-semibold text-white shadow-[0_18px_45px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(34,211,238,0.35)] sm:py-4"
+            >
+              <span className="absolute inset-0 translate-x-[-120%] bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-[120%]" />
+              <span className="relative">Send Message</span>
+              <Send size={18} className="relative transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+        </motion.form>
+      </div>
     </section>
   );
 }

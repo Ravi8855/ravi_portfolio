@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
@@ -51,14 +50,14 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full overflow-hidden bg-[#050816] pt-28 text-white"
+      className="relative min-h-screen w-full overflow-hidden bg-[#050816] pt-24 text-white sm:pt-28"
     >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.2),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.16),transparent_34%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:64px_64px] opacity-20" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-5xl items-center justify-center px-6 py-16 md:px-10">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-5xl items-center justify-center px-4 py-10 sm:px-6 sm:py-14 md:min-h-[calc(100vh-7rem)] md:px-10 md:py-16">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -73,7 +72,7 @@ const Hero = () => {
           }}
           className="w-full"
         >
-          <div className="relative mx-auto max-w-3xl px-6 py-10 text-center sm:px-10 md:py-12">
+          <div className="relative mx-auto max-w-3xl px-2 py-8 text-center sm:px-10 sm:py-10 md:py-12">
             <div className="absolute left-8 top-8 h-20 w-20 rounded-full border border-sky-300/20 bg-sky-300/10 blur-xl" />
             <div className="absolute bottom-8 right-8 h-24 w-24 rounded-full border border-indigo-300/20 bg-indigo-300/10 blur-xl" />
             <motion.div
@@ -89,7 +88,7 @@ const Hero = () => {
 
             <motion.p
               variants={roleContainer}
-              className="relative mb-10 text-sm font-semibold uppercase tracking-[0.28em] sm:text-base"
+              className="relative mb-8 text-xs font-semibold uppercase tracking-[0.16em] sm:mb-10 sm:text-base sm:tracking-[0.28em]"
               aria-label={roleText}
             >
               {Array.from(roleText).map((letter, index) => (
@@ -106,7 +105,7 @@ const Hero = () => {
               ))}
             </motion.p>
 
-            <div className="relative mx-auto h-60 w-60 rounded-full bg-gradient-to-br from-sky-300 via-indigo-300 to-white p-[4px] shadow-[0_30px_90px_rgba(56,189,248,0.28)] sm:h-72 sm:w-72">
+            <div className="relative mx-auto h-52 w-52 rounded-full bg-gradient-to-br from-sky-300 via-indigo-300 to-white p-[4px] shadow-[0_30px_90px_rgba(56,189,248,0.28)] sm:h-72 sm:w-72">
               {bubbles.map((bubble, index) => (
                 <motion.span
                   key={index}
@@ -137,7 +136,7 @@ const Hero = () => {
             <motion.h1
               variants={fadeUp}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="mt-8 text-5xl font-bold tracking-tight md:text-7xl"
+              className="mt-7 text-4xl font-bold tracking-tight sm:mt-8 sm:text-5xl md:text-7xl"
             >
               <motion.span
                 animate={{
@@ -153,22 +152,13 @@ const Hero = () => {
             <motion.p
               variants={fadeUp}
               transition={{ duration: 0.65, ease: "easeOut" }}
-              className="mx-auto mt-5 max-w-xl text-base leading-7 text-slate-300 sm:text-lg"
+              className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-300 sm:mt-5 sm:text-lg sm:leading-7"
             >
               Software developer focused on designing and developing modern web
               applications with clean UI, scalable architecture, secure APIs,
               and smooth user experiences that solve real-world problems
               efficiently.
             </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              transition={{ duration: 0.65, ease: "easeOut" }}
-              className="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-slate-950/45 px-5 py-3 text-sm font-medium text-slate-300"
-            >
-              <MapPin size={18} className="text-sky-300" />
-              Pune, Maharashtra, India
-            </motion.div>
           </div>
         </motion.div>
       </div>
