@@ -43,7 +43,7 @@ export default function Navbar() {
             className="group flex items-center gap-3 text-left"
             aria-label="Go to home section"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-400 text-sm font-black text-slate-950 shadow-[0_12px_30px_rgba(56,189,248,0.22)]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-300 to-blue-500 text-sm font-black text-slate-950 shadow-[0_12px_30px_rgba(56,189,248,0.35)]">
               RC
             </span>
             <span>
@@ -62,7 +62,11 @@ export default function Navbar() {
               <li key={item.label}>
                 <button
                   onClick={() => handleNavClick(item.to)}
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-white/10 hover:text-white"
+                  className={`relative px-4 py-2 text-sm font-semibold transition hover:text-white ${
+                    item.label === "Home"
+                      ? "text-cyan-300 after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-8 after:-translate-x-1/2 after:rounded-full after:bg-cyan-400 after:shadow-[0_0_10px_rgba(34,211,238,0.9)]"
+                      : "text-slate-100"
+                  }`}
                 >
                   {item.label}
                 </button>
