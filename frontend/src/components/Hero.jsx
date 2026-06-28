@@ -28,7 +28,7 @@ const workflowSteps = [
   {
     title: "BACKEND",
     Icon: Settings,
-    position: "left-[83%] top-[27%]",
+    position: "left-[86.4%] top-[29%]",
     labelPosition:
       "left-1/2 top-full mt-2 -translate-x-1/2 text-center sm:left-full sm:top-1/2 sm:ml-3 sm:mt-0 sm:-translate-x-0 sm:-translate-y-1/2 sm:text-left",
     labelAlign: "items-center sm:items-start",
@@ -37,7 +37,7 @@ const workflowSteps = [
   {
     title: "DATABASE",
     Icon: Database,
-    position: "left-[83%] top-[73%]",
+    position: "left-[86.4%] top-[71%]",
     labelPosition:
       "left-1/2 top-full mt-2 -translate-x-1/2 text-center sm:left-full sm:top-1/2 sm:ml-3 sm:mt-0 sm:-translate-x-0 sm:-translate-y-1/2 sm:text-left",
     labelAlign: "items-center sm:items-start",
@@ -54,7 +54,7 @@ const workflowSteps = [
   {
     title: "DEPLOYMENT",
     Icon: CloudUpload,
-    position: "left-[17%] top-[73%]",
+    position: "left-[13.6%] top-[71%]",
     labelPosition:
       "left-1/2 top-full mt-2 -translate-x-1/2 text-center sm:right-full sm:left-auto sm:top-1/2 sm:mr-3 sm:mt-0 sm:-translate-y-1/2 sm:translate-x-0 sm:text-right",
     labelAlign: "items-center sm:items-end",
@@ -63,7 +63,7 @@ const workflowSteps = [
   {
     title: "MAINTENANCE",
     Icon: Wrench,
-    position: "left-[17%] top-[27%]",
+    position: "left-[13.6%] top-[29%]",
     labelPosition:
       "left-1/2 top-full mt-2 -translate-x-1/2 text-center sm:right-full sm:left-auto sm:top-1/2 sm:mr-3 sm:mt-0 sm:-translate-y-1/2 sm:translate-x-0 sm:text-right",
     labelAlign: "items-center sm:items-end",
@@ -87,21 +87,14 @@ const particles = [
 ];
 
 const orbitPath =
-  "M 360 64 C 495 68 612 139 656 248 C 704 368 665 505 560 586 C 447 673 273 673 160 586 C 55 505 16 368 64 248 C 108 139 225 68 360 64";
+  "M 360 58 A 302 302 0 1 1 359.9 58";
 
-const WorkflowStep = ({ step, index }) => {
+const WorkflowStep = ({ step }) => {
   const Icon = step.Icon;
 
   return (
     <div className={`absolute z-30 ${step.position}`}>
       <motion.div
-        animate={{ y: [0, index % 2 === 0 ? -8 : 8, 0] }}
-        transition={{
-          duration: 4.6 + index * 0.25,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: index * 0.12,
-        }}
         whileHover={{ scale: 1.1 }}
         className="relative -translate-x-1/2 -translate-y-1/2"
       >
@@ -160,21 +153,24 @@ const WorkflowOrbit = () => {
             <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.22" />
           </linearGradient>
         </defs>
-        <path
-          d={orbitPath}
+        <circle
+          cx="360"
+          cy="360"
+          r="302"
+          fill="none"
+          stroke="rgba(125,211,252,0.2)"
+          strokeWidth="10"
+          className="blur-md"
+        />
+        <circle
+          cx="360"
+          cy="360"
+          r="302"
           fill="none"
           stroke="url(#workflow-orbit)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeDasharray="10 12"
-        />
-        <path
-          d={orbitPath}
-          fill="none"
-          stroke="rgba(125,211,252,0.2)"
-          strokeWidth="10"
-          strokeLinecap="round"
-          className="blur-md"
         />
         <motion.circle
           r="5"
@@ -226,8 +222,8 @@ const WorkflowOrbit = () => {
         </motion.div>
       </div>
 
-      {workflowSteps.map((step, index) => (
-        <WorkflowStep key={step.title} step={step} index={index} />
+      {workflowSteps.map((step) => (
+        <WorkflowStep key={step.title} step={step} />
       ))}
     </motion.div>
   );
@@ -302,10 +298,8 @@ const Hero = () => {
               transition={{ duration: 0.65, ease: "easeOut" }}
               className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base"
             >
-              Full Stack Developer focused on designing and developing modern web
-              applications with clean UI, scalable architecture, secure APIs,
-              and smooth user experiences that solve real-world problems
-              efficiently.
+              Passionate about developing end-to-end software solutions with
+              scalable systems, secure APIs, and impactful user experiences.
             </motion.p>
 
             <motion.div
