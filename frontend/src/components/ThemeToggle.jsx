@@ -15,11 +15,11 @@ export default function ThemeToggle() {
 
   function applyTheme(value) {
     const html = document.documentElement;
-    html.classList.remove("light", "dark");;
+    html.classList.remove("light", "dark");
     if (value === "system") {
       // Use OS/browser preference
       const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      html.classList.add(prefersDark ? "dark" : "light");
+      html.classList.add(prefersDark ? "dark" : "light");;
     } else {
       html.classList.add(value);
     }
