@@ -58,7 +58,7 @@ export default function Footer() {
 
           <p className="flex items-center gap-3 mt-3 text-gray-300 hover:text-green-300 transition">
             <FaPhoneAlt className="text-green-400 drop-shadow-sm" />
-            +91 88550 25560
+            +918855025560
           </p>
 
           <p className="flex items-center gap-3 mt-3 text-gray-300 hover:text-red-300 transition">
