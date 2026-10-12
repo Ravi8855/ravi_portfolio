@@ -14,7 +14,7 @@ export default function ProjectManager() {
   const load = async () => {
     try {
       const res = await fetchProjects();
-      setProjects(res.data.projects || res.data || []);;
+      setProjects(res.data.projects || res.data || []);
     } catch (err) { console.error(err); }
   };
 
