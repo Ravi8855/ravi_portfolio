@@ -13,7 +13,7 @@ export default function Signup() {
     } catch (err) {
       alert("Error creating account");
     }
-  };;
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
