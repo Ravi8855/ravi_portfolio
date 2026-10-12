@@ -15,10 +15,12 @@ export default function ProjectManager() {
     try {
       const res = await fetchProjects();
       setProjects(res.data.projects || res.data || []);
+
+
     } catch (err) { console.error(err); }
   };
 
-  useEffect(()=>{ load(); }, []);
+  useEffect(() => { load(); }, []);
 
   const handleCreate = async (formData) => {
     setLoading(true);
@@ -53,12 +55,12 @@ export default function ProjectManager() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-bold">Projects</h3>
-        <button onClick={()=>{ setShowForm(true); setEditing(null); }} className="px-3 py-2 bg-green-600 rounded">Add Project</button>
+        <button onClick={() => { setShowForm(true); setEditing(null); }} className="px-3 py-2 bg-green-600 rounded">Add Project</button>
       </div>
 
       {showForm && !editing && (
         <div className="mb-4 bg-slate-800 p-4 rounded">
-          <ProjectForm onSave={handleCreate} onCancel={()=>setShowForm(false)} />
+          <ProjectForm onSave={handleCreate} onCancel={() => setShowForm(false)} />
         </div>
       )}
 
@@ -67,7 +69,7 @@ export default function ProjectManager() {
           <ProjectForm
             initial={editing}
             onSave={async (fd) => await handleUpdate(editing._id, fd)}
-            onCancel={()=>{ setEditing(null); setShowForm(false); }}
+            onCancel={() => { setEditing(null); setShowForm(false); }}
           />
         </div>
       )}
@@ -79,8 +81,8 @@ export default function ProjectManager() {
             <h4 className="text-lg font-semibold">{p.title}</h4>
             <p className="text-sm">{p.description}</p>
             <div className="flex gap-2 mt-2">
-              <button onClick={()=>{ setEditing(p); setShowForm(true); }} className="px-3 py-1 bg-yellow-500 rounded">Edit</button>
-              <button onClick={()=>handleDelete(p._id)} className="px-3 py-1 bg-red-600 rounded">Delete</button>
+              <button onClick={() => { setEditing(p); setShowForm(true); }} className="px-3 py-1 bg-yellow-500 rounded">Edit</button>
+              <button onClick={() => handleDelete(p._id)} className="px-3 py-1 bg-red-600 rounded">Delete</button>
             </div>
           </div>
         ))}
