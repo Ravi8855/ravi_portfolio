@@ -34,5 +34,5 @@ export default function ThemeToggle() {
         <button className={`chip ${theme === "system" ? "active" : ""}`} onClick={() => setTheme("system")}>System</button>
       </div>
     </div>
-  );
+  );;
 }
